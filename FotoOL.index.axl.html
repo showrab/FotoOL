@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+
+<html lang="de">
+
+ <head>
+ </head>
+
+<body>
+
+<!-- Main content 29 -->
+
+<h1>Finde Sie wo Fotto!</h1>
+
+<p>Gehen Sie zum Ort, wo dieses Foto aufgenommen wurde. Dann geben Sie Koordinaten!".
+</p>
+
+<img id="foto" src="Bilder/bild1.jpeg">
+
+<form>
+  <label for="latitude">Latitude:</label><br>
+  <input type="text" id="latitude" name="latitude"><br>
+  <label for="longitude">Longitude:</label><br>
+  <input type="text" id="longitude" name="longitude">
+</form>
+
+<p><button id="checkInputBtn" type="button" onclick="checkInput();">Check Input</button></p>
+
+<!-- END MAIN -->
+
+<script>
+
+// Posten und Postenliste anlegen 
+const p1 = new Map([["name", "p1"], ["foto", "bild1.jpeg"], ["latitude", 100], ["longitude", 100], ["radius", 10], ["hint", "Hinweis-1"]]);
+const p2 = new Map([["name", "p2"], ["foto", "bild2.jpeg"], ["latitude", 200], ["longitude", 200], ["radius", 20], ["hint", "Hinweis-2"]]);
+const p3 = new Map([["name", "p3"], ["foto", "bild3.jpeg"], ["latitude", 300], ["longitude", 300], ["radius", 30], ["hint", "Hinweis-3"]]);
+const p4 = new Map([["name", "p4"], ["foto", "bild4.jpeg"], ["latitude", 400], ["longitude", 400], ["radius", 40], ["hint", "Hinweis-4"]]);
+const p5 = new Map([["name", "p5"], ["foto", "bild5.jpeg"], ["latitude", 500], ["longitude", 500], ["radius", 50], ["hint", "Hinweis-5"]]);
+const postenliste = new Array (p1, p2, p3, p4, p5);
+
+// Pfad f¸r Bilder...
+const pathToPictures = "Bilder/";
+
+// Counter f¸r den aktuellen Posten, Nummerierung beginnt mit 0 
+// postenNummer is set by function textCoordinates() and used by function checkInput()
+var postenNummer = 0;
+
+// match wird von testCoorinates() gesetzt wenn die koordinaten zu einem Psten passen
+// match wird von checkInput() verwendet um Feedback zu geben
+var match = -1;
+
+// iterating postenliste check coordinates in HTML-input fields "latitude" und "longitude". 
+function checkInput() {
+  match = -1; // reset match before iterating thru postenListe
+  postenliste.forEach(testCoordinates);
+  switch (match) {
+    case -1: 
+      alert('Not quite - Try again harder!');
+      break;
+    case 4: 
+      alert('HOORAY! -- Come in and get a beer!!');
+      break;
+    default: {
+      // Global var postenNummer is set by function textCoordinates()
+      document.getElementById("foto").src = pathToPictures + postenliste[postenNummer].get("foto");
+    } 
+  }
+}
+
+// diese fn wird von checkInput() iterativ f¸r jeden Posten der postenliste aufgerufen
+// Gibt es einen match, wird die postennummer auf index+1 gesetzt, sonst gibt es eine Meldung
+function testCoordinates (value, index, array) {
+  var latitude = document.getElementById("latitude").value;
+  var longitude = document.getElementById("longitude").value;
+  
+  var latDiff = value.get("latitude")-latitude;
+  var longDiff = value.get("longitude")-longitude;
+  var squaredLatDiff = latDiff**2;
+  var squaredLongDiff = longDiff**2;
+  var d = Math.sqrt(squaredLatDiff + squaredLongDiff);
+  var maxR = value.get("radius");
+
+  if (d < maxR) {
+    match = index;
+    postenNummer = index + 1; 
+  }
+}
+
+// Geh zum n‰chsten Posten
+function displayNextFoto() {
+  var foto = document.getElementById("foto");
+  foto.src = postenliste[postenNummer].foto;
+}
+
+</script>
+</body>
+</html>
+
