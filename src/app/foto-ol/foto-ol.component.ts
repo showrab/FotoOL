@@ -28,20 +28,36 @@ export class FotoOlComponent {
   // Fotos mit ihren Koordinaten und Hilfetexten.
   photos = [
     {
-      photoUrl: '../../assets/images/lucas.jpeg',
+      photoUrl: '../../assets/images/Bild.1.jpeg',
       coordinates: {
-        lat: 46.76213,
-        lng: 8.63025
+        lat: 46.773503,
+        lng: 7.635052
       },
-      hint: 'Bei Sandra im Eriz'
+      hint: 'Bushaltestelle Ziegeieistrasse'
     },
     {
-      photoUrl: '../../assets/images/muenchen.jpg',
+      photoUrl: '../../assets/images/Bild.2.jpeg',
       coordinates: {
-        lat: 46.76213,
-        lng: 7.63025
+        lat: 46.774693,
+        lng: 7.636625
       },
-      hint: 'WM 1974'
+      hint: 'Obere Ecke Bösbachstrasse'
+    },
+    {
+      photoUrl: '../../assets/images/Bild.3.jpeg',
+      coordinates: {
+        lat: 46.775042,
+        lng: 7.634388
+      },
+      hint: 'Bösbach-Finkenweg'
+    },
+    {
+      photoUrl: '../../assets/images/Bild.4.jpg',
+      coordinates: {
+        lat: 46.773958,
+        lng: 7.633619
+      },
+      hint: 'Lin Den Weg'
     }
   ];
   lastDistance = 0;
