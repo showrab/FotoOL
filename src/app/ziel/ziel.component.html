@@ -1,0 +1,14 @@
+<h2>Du bist im Ziel</h2>
+
+<p>
+  Gratuliere {{teamName}} du hast die Fotos nur um gesamt <b>{{result}}m</b> verfehlt.
+</p>
+<p>
+  Das sind deine Konkurenten:
+</p>
+<table>
+  <tr *ngFor="let konkurent of hightScores; let i = index">
+    <td style="text-align: right;">{{konkurent.result}}m</td>
+    <td>{{konkurent.teamName}}</td>
+  </tr>
+</table>

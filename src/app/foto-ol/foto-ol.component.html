@@ -1,0 +1,40 @@
+<div *ngIf="showFotos">
+  <p>
+    Wandere zur Position wo dieses Foto ({{index+1}}/{{photos.length}}) aufgenommen wurde.
+  </p>
+  <img src="{{getPhotoUrl()}}" height="300px"/ alt="">
+
+
+  <div *ngIf="showHint">{{getHint()}}</div>
+  <p>
+    Strafpunkte {{result}} m,
+    Distanz zu letzem Foto {{lastDistance}}m
+  </p>
+
+  <button *ngIf="!showHint" (click)="getHint()">Keine Ahnung wo das Foto aufgenommen wurde. Hilf mir auf die Sprünge</button>
+  <br><br>
+  <button (click)="setCurrentCoordinates()">Ich bin am Punkt wo Fotografiert wurde</button>
+</div>
+
+<div *ngIf="showHelp">
+  <app-help (teamName)="setTeamName($event)"></app-help>
+</div>
+
+<div *ngIf="!hasStarted">
+  <button (click)="start()"
+          [disabled]="teamName == ''"
+          title="{{teamName?'':'zuerst Teamnamen eingeben'}}">
+    Starte Foto-OL
+  </button>
+</div>
+
+<div *ngIf="showMap">
+  <button (click)="nextPhoto()">Ja diese Position ist OK</button>
+  <app-map [center]="center"></app-map>
+</div>
+
+<div *ngIf="amZiel">
+  Distanz zu letzem Foto {{lastDistance}}m
+  <app-ziel [result]=result [teamName]="teamName"></app-ziel>
+</div>
+
