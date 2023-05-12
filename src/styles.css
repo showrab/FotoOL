@@ -1,1 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+
+#video {
+    width: 500px;
+    height: 375px;
+    background-color: #666;
+    /*Mirror code starts*/
+    transform: rotateY(180deg);
+    -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+    -moz-transform:rotateY(180deg); /* Firefox */
+    /*Mirror code ends*/
+}
+
+#map {
+  position: fixed;
+  overflow: clip;
+  width: 500px;
+  height: 500px;
+  border: thin solid black;
+}

@@ -1,0 +1,21 @@
+.active {
+  background: aqua;
+}
+
+.crumbs ol {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.crumb {
+  display: inline-block;
+  padding-right: 5px;
+}
+
+.crumb a::after {
+  display: inline-block;
+  color: #000;
+  font-size: 80%;
+  font-weight: bold;
+  padding: 10px 3px;
+}

@@ -1,6 +1,15 @@
 # FotoOl
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.7.
+### Beschreibung 
+Mit FotoOl (Foto OL) 
+Zur 100 Jahr Feier der Viva Kirche wollen wir einen Foto OL durchführen. Ein Foto OL ist ein Orientierungslauf wo die Punkte zum anlaufen nicht auf der Karte eingezeichnet sind, sondern man bekommt Fotos und muss so die Punkte finden. Je genauer man an der Position ist desto weniger Strafpunkte [m] kriegt man. Wer zuletzt am wenigsten Strafpunkte [m] hat, gewinnt.
+
+Technisch wird das gelöst indem man am gefundenen Foto-Punkt die Koordinaten aufzeichnet.
+
+
+## Install Angular
+https://angular.io/guide/setup-local
 
 ## Development server
 
