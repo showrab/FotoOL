@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-hint',
@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./hint.component.css']
 })
 export class HintComponent {
-
+  @Input() hintText: any;
 }

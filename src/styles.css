@@ -1,4 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+/* optional reset for presentation */
+* {
+  font-family: Arial;
+  text-decoration: none;
+}
+p {
+  font-size: 20px;
+}
 
 #video {
     width: 500px;
@@ -18,3 +26,65 @@
   height: 500px;
   border: thin solid black;
 }
+
+.button {
+  display: inline-block;
+  padding: 0.75rem 1.25rem;
+  border-radius: 10rem;
+  color: #fff;
+  font-size: 1rem;
+  letter-spacing: 0.15rem;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+.button:disabled,
+.button[disabled]
+{
+  border: 1px solid #999999;
+  color: #222222;
+}
+
+.button:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #0cf;
+  border-radius: 10rem;
+  z-index: -2;
+}
+.button[disabled]:after {
+  background-color: #888888;
+}
+
+.button:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background-color: #008fb3;
+  transition: all 0.3s;
+  border-radius: 10rem;
+  z-index: -1;
+}
+.button[disabled]:before {
+  background-color: #888888;
+}
+
+.button:hover {
+  color: #fff;
+}
+.button:disabled:hover {
+  color: #666666;
+}
+.button:hover:before {
+  width: 100%;
+}
+
+
