@@ -18,29 +18,29 @@ export class MapComponent implements AfterViewInit{
   ngAfterViewInit(): void {
     // console.log("ngAfterViewInit center:", this.center);
     //const map = document.getElementById("map");
-    this.map = new google.maps.Map(
-      document.getElementById("map") as HTMLElement,
-      {
-        mapTypeId: 'hybrid',
-        zoomControl: true,
-        scrollwheel: false,
-        disableDoubleClickZoom: true,
-        maxZoom: 20,
-        minZoom: 0,
-        heading: 180,
-        zoom: this.zoom,
-        center: this.center
-      }
-    );
-    this.marker = new google.maps.Marker({
-      position: {
-        lat: 46.76213,
-        lng: 7.63025
-      },
-      map: this.map,
-      title: "Von hier wurde Fotografiert",
-      draggable: true
-    });
+    // this.map = new google.maps.Map(
+    //   document.getElementById("map") as HTMLElement,
+    //   {
+    //     mapTypeId: 'hybrid',
+    //     zoomControl: true,
+    //     scrollwheel: false,
+    //     disableDoubleClickZoom: true,
+    //     maxZoom: 20,
+    //     minZoom: 0,
+    //     heading: 180,
+    //     zoom: this.zoom,
+    //     center: this.center
+    //   }
+    // );
+    // this.marker = new google.maps.Marker({
+    //   position: {
+    //     lat: 46.76213,
+    //     lng: 7.63025
+    //   },
+    //   map: this.map,
+    //   title: "Von hier wurde Fotografiert",
+    //   draggable: true
+    // });
   }
 
   ngOnChanges(changes: { [property: string]: SimpleChange }) {
@@ -64,15 +64,15 @@ export class MapComponent implements AfterViewInit{
   //   setCenter(latlng: google.maps.LatLng | google.maps.LatLngLiteral) {
   // };
 
-  options: google.maps.MapOptions = {
-    mapTypeId: 'hybrid',
-    zoomControl: true,
-    scrollwheel: true,
-    disableDoubleClickZoom: true,
-    maxZoom: 20,
-    minZoom: 8,
-    heading: 180,
-
-  };
+  // options: google.maps.MapOptions = {
+  //   mapTypeId: 'hybrid',
+  //   zoomControl: true,
+  //   scrollwheel: true,
+  //   disableDoubleClickZoom: true,
+  //   maxZoom: 20,
+  //   minZoom: 8,
+  //   heading: 180,
+  //
+  // };
 
 }
