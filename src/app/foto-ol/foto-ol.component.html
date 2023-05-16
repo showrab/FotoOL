@@ -1,6 +1,6 @@
 <div *ngIf="showFotos">
   <p>
-    Wandere zur Position wo dieses Foto ({{index+1}}/{{fotoList.photos.length}}) aufgenommen wurde.
+    Wandere zur Position wo dieses Foto ({{index+1}}/{{photos.length}}) aufgenommen wurde.
   </p>
   <img src="{{getPhotoUrl()}}" height="300px" alt=""/>
 
@@ -23,7 +23,7 @@
   <app-help (teamName)="setTeamName($event)"></app-help>
 </div>
 
-<div *ngIf="!hasStarted">
+<div *ngIf="!hasStarted ">
   <button (click)="start()"
           class="button"
           [disabled]="teamName == ''"
@@ -42,3 +42,9 @@
   <app-ziel [result]=result [teamName]="teamName"></app-ziel>
 </div>
 
+<app-admin 
+  *ngIf="showAdmin"
+  (adminPhoto)="addAdminPhoto($event)"
+  (clearPhotos)="clearPhotos()"
+  >
+</app-admin>

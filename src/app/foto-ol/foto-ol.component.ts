@@ -9,7 +9,7 @@ import { fotoList } from './foto-list';
 export class FotoOlComponent {
   teamName: string = '';
 
-  readonly fotoList = fotoList;
+  photos = fotoList.photos;
   // Index des zu suchenden Fotos
   index = 0;
 
@@ -29,8 +29,8 @@ export class FotoOlComponent {
   showFotos = false;
   showMap = false;
   showHint = false;
-
   amZiel = false;
+  showAdmin =false;
 
   /** wird von HelpComponent.setTeamName() bei jedem Buchstaben vom Input aufgerufen.
    *
@@ -38,6 +38,10 @@ export class FotoOlComponent {
    */
   setTeamName(teamName: string) {
     this.teamName = teamName;
+    if (teamName === 'admin') {
+      this.showAdmin = true;
+      this.showHelp =false;
+    }
   }
 
   /** OL Starten */
@@ -46,12 +50,13 @@ export class FotoOlComponent {
       this.showHelp = false;
       this.hasStarted = true;
       this.showFotos = true;
+      this.showAdmin = false;
     }
   }
 
   /** URL zum aktuellen Bild. */
   getPhotoUrl() {
-    return (fotoList.photos)[this.index].photoUrl;
+    return (this.photos)[this.index].photoUrl;
   }
 
   /** Aktuelle Koordinaten speichern. */
@@ -61,7 +66,7 @@ export class FotoOlComponent {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
       };
-      console.log("setCurrentCoordinates center:",this.center);
+//      console.log("setCurrentCoordinates center:",this.center);
 
       if (this.skipMap) {
         this.nextPhoto();
@@ -79,7 +84,7 @@ export class FotoOlComponent {
     this.showMap = false;
 
     this.index ++;
-    if (this.index >= fotoList.photos.length) {
+    if (this.index >= this.photos.length) {
       this.amZiel = true;
       this.showFotos = false;
     }
@@ -93,7 +98,7 @@ export class FotoOlComponent {
       this.result += this.HINT_PENALTY;
     }
     this.showHint = true;
-    return (fotoList.photos)[this.index].hint;
+    return (this.photos)[this.index].hint;
   }
 
   /** Bereschne die Distanz von deinem Standpunkt zu dem Foto
@@ -102,9 +107,9 @@ export class FotoOlComponent {
   getDistanceFromLatLonInM() {
     const r = 6373.0;
     const lat1 = this.center?.lat;
-    const lat2 = fotoList.photos[this.index].coordinates.lat;
+    const lat2 = this.photos[this.index].coordinates.lat;
     const lon1 = this.center?.lng;
-    const lon2 = fotoList.photos[this.index].coordinates.lng;
+    const lon2 = this.photos[this.index].coordinates.lng;
 
     const R = 6371; // Radius of the earth in km
     const dLat = this.deg2rad(lat2 - lat1);  // deg2rad below
@@ -123,4 +128,11 @@ export class FotoOlComponent {
     return deg * (Math.PI/180)
   }
 
+  addAdminPhoto(photo: any) {
+    this.photos.push(photo);
+  }
+
+  clearPhotos() {
+    this.photos = [];
+  }
 }
