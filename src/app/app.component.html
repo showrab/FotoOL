@@ -1,44 +1,11 @@
-<h1>{{title}}</h1>
-<!--<nav class="crumbs">-->
-<!--  <ol>-->
-<!--    <li class="crumb"><a routerLink="/foto-ol" routerLinkActive="active" ariaCurrentWhenActive="page">Foto-OL</a></li>-->
-<!--    <li class="crumb"><a routerLink="/help" routerLinkActive="active" ariaCurrentWhenActive="page">Hilfe</a></li>-->
-<!--  </ol>-->
-<!--</nav>-->
-<router-outlet></router-outlet>
+<div style="
+  background-image: url('../assets/images/foto-ol_blured.png');
+  background-repeat: no-repeat;
+  background-size: 130px;
+  ">
+  <h1>{{title}}</h1>
 
-
-
-<!--<div class="container mt-5">
-  <h2>Angular Webcam Capture Image from Camera</h2>
-  <div class="col-md-12">
-    <webcam
-      [trigger]="invokeObservable"
-      (imageCapture)="captureImg($event)"
-    ></webcam>
-  </div>
-  <div class="col-md-12">
-    <button class="btn btn-danger" (click)="getSnapshot()">
-      Capture Image
-    </button>
-  </div>
-  <div class="col-12">
-    <div id="results">Your taken image manifests here...</div>
-    <img [src]="webcamImage.imageAsDataUrl" height="400px" />
-  </div>
+  <app-foto-ol></app-foto-ol>
+<!--  <app-test></app-test>-->
 </div>
-
-
-&lt;!&ndash;<img [src]="webcamImage.imageAsDataUrl" id="img1" />&ndash;&gt;
-<img #img src="assets/images/lucas.jpeg" height="300" id="img1" />
-<pre>Make and model: <span id="makeAndModel"></span></pre>
-
-<br/>
-
-<img src="assets/images/lucas.jpeg" height="300" id="img2" />
-<pre id="allMetaDataSpan"></pre>
-<br/>
-<button (click)="getExif2()">exif</button>
-<div>{{output | json}}</div>-->
-
 

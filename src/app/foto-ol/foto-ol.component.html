@@ -5,23 +5,27 @@
   <img src="{{getPhotoUrl()}}" height="300px" alt=""/>
 
 
-  <div *ngIf="showHint">{{getHint()}}</div>
+  <div *ngIf="showHint">
+    <app-hint [hintText]="getHint()"></app-hint>
+  </div>
+
   <p>
-    Strafpunkte {{result}} m,
+    Strafpunkte {{result}}m,
     Distanz zu letzem Foto {{lastDistance}}m
   </p>
 
-  <button *ngIf="!showHint" (click)="getHint()">Keine Ahnung wo das Foto aufgenommen wurde. Hilf mir auf die Sprünge</button>
+  <button *ngIf="!showHint" (click)="getHint()"class="button">Keine Ahnung wo das Foto aufgenommen wurde. Hilf mir auf die Sprünge</button>
   <br><br>
-  <button (click)="setCurrentCoordinates()">Ich bin am Punkt wo Fotografiert wurde</button>
+  <button (click)="setCurrentCoordinates()" class="button">Ich bin am Punkt wo Fotografiert wurde</button>
 </div>
 
 <div *ngIf="showHelp">
   <app-help (teamName)="setTeamName($event)"></app-help>
 </div>
 
-<div *ngIf="!hasStarted">
+<div *ngIf="!hasStarted ">
   <button (click)="start()"
+          class="button"
           [disabled]="teamName == ''"
           title="{{teamName?'':'zuerst Teamnamen eingeben'}}">
     Starte Foto-OL
@@ -29,7 +33,7 @@
 </div>
 
 <div *ngIf="showMap">
-  <button (click)="nextPhoto()">Ja diese Position ist OK</button>
+  <button (click)="nextPhoto()" class="button">Ja diese Position ist OK</button>
   <app-map [center]="center"></app-map>
 </div>
 
@@ -38,3 +42,9 @@
   <app-ziel [result]=result [teamName]="teamName"></app-ziel>
 </div>
 
+<app-admin 
+  *ngIf="showAdmin"
+  (adminPhoto)="addAdminPhoto($event)"
+  (clearPhotos)="clearPhotos()"
+  >
+</app-admin>
