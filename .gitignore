@@ -1,15 +1,16 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # Compiled output
-/dist
+client/dist
 /tmp
 /out-tsc
 /bazel-out
 
 # Node
-/node_modules
-npm-debug.log
-yarn-error.log
+client/node_modules
+client/node
+client/npm-debug.log
+client/yarn-error.log
 
 # IDEs and editors
 .idea/
@@ -29,7 +30,7 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
-/.angular/cache
+client/.angular/cache
 .sass-cache/
 /connect.lock
 /coverage
@@ -41,5 +42,3 @@ testem.log
 .DS_Store
 Thumbs.db
 
-src/googleApi.js
-src/index.html
