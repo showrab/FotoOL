@@ -3,7 +3,7 @@ import {Photo} from "../model/photo";
 import {FotoOlService} from "../foto-ol.service";
 import {Tour} from "../model/tour";
 
-export const enum AdminState {
+export enum AdminState {
   camera = 'camera',
   capturedPhoto = 'capturedPhoto',
   photoList = 'photoList',
@@ -20,8 +20,8 @@ export class AdminComponent implements OnInit {
   @Output() start = new EventEmitter;
 
   // Ablaufsteuerung
-  private state: string = 'highScore';
-  //AdminState: AdminState | undefined;
+  AdminState = AdminState;
+  private state: string = AdminState.highScore;
 
   // Lists der Fotos vom Server
   photoList: Photo[] | undefined;
@@ -29,6 +29,7 @@ export class AdminComponent implements OnInit {
   tourList: Tour[] | undefined;
   // Foto mit Metadaten zum editieren
   photo: Photo = new Photo();
+
 
   constructor(private fotoOlService: FotoOlService) {}
 
@@ -68,20 +69,20 @@ export class AdminComponent implements OnInit {
   }
   doShowPhotoList() {
     this.loadAllPhotos();
-    this.state = 'photoList';
+    this.state = AdminState.photoList;
   }
   doShowCamera() {
-    this.state = 'camera';
+    this.state = AdminState.camera;
   }
   doShowCapturedPhoto() {
-    this.state = 'capturedPhoto';
+    this.state = AdminState.capturedPhoto;
   }
   doShowHighScore() {
-    this.state = 'highScore';
+    this.state = AdminState.highScore;
   }
   doShowTourList() {
     this.loadAllTours();
-    this.state = 'tourList';
+    this.state = AdminState.tourList;
   }
   doCancelPhotoEdit() {
     this.doShowPhotoList();

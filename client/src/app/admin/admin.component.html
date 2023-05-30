@@ -6,11 +6,11 @@
   <button class="w3-bar-item w3-button" [className]="getClass('highScore')" (click)="doShowHighScore()">HigScore</button>
 </div>
 
-<div *ngIf="show('camera')">
+<div *ngIf="show(AdminState.camera)">
   <app-camera (photo)="setCapturedPhoto($event)"></app-camera>
 </div>
 
-<div *ngIf="show('photoList')">
+<div *ngIf="show(AdminState.photoList)">
   <app-photos-list
     [photos]="photoList"
     (updatePhoto)="editPhoto($event)"
@@ -18,7 +18,7 @@
   </app-photos-list>
 </div>
 
-<div class="col-12" *ngIf="show('capturedPhoto')">
+<div class="col-12" *ngIf="show(AdminState.capturedPhoto)">
   <app-photo-edit
     [photo]="photo"
     (savePhoto)="savePhoto($event)"
@@ -27,8 +27,11 @@
   ></app-photo-edit>
 </div>
 
-<app-tour *ngIf="show('tourList')"></app-tour>
+<app-tour *ngIf="show(AdminState.tourList)"></app-tour>
 
-<div *ngIf="show('highScore')">
-  <app-all-high-score [tourList]="tourList"></app-all-high-score>
+<div *ngIf="show(AdminState.highScore)">
+  <app-all-high-score
+    [tourList]="tourList"
+    [isAdmin]="true"
+  ></app-all-high-score>
 </div>

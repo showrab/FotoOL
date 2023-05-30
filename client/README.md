@@ -34,26 +34,6 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
-## Docker Image erstellen
-https://www.indellient.com/blog/how-to-dockerize-an-angular-application-with-nginx/
-
-Docker Images auf dem Server erstellen
-
-`docker build -t showrab/foto-ol:latest .`
-
-Prüfen ob Image gebuildet wurde.
-
-`docker images |grep foto-ol`
-
-## Docker Image starten
-Auf Server der das Docker Image erstellt hat
-
-`docker run -d -p 8080:80 showrab/foto-ol`
-
-Testen ob Image foto-ol funktioniert
-
-[http://server:8080](http://hpe:8080)
-
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.

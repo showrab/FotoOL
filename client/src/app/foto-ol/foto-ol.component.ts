@@ -5,6 +5,15 @@ import {FotoOlService} from "../foto-ol.service";
 import {HighScore} from "../model/high-score";
 import {Tour} from "../model/tour";
 
+export enum FotoOlState {
+  showHelp = 'showHelp',
+  showFotos = 'showFotos',
+  amZiel = 'amZiel',
+  showHighScore ='showHighScore',
+  showAllHighScore = 'showAllHighScore',
+  showAdmin = 'showAdmin'
+};
+
 @Component({
   selector: 'app-foto-ol',
   templateUrl: './foto-ol.component.html',
@@ -29,25 +38,19 @@ export class FotoOlComponent {
   hintPenalty: number = 10;
 
   // Ablaufsteuerung
-  showHelp = true;
-  hasStarted = false;
-  showFotos = false;
+  FotoOlState = FotoOlState;
+  state: string = FotoOlState.showHelp;
   showMap = false;
   showHint = false;
-  amZiel = false;
-  showHighScore: boolean = false;
-  showAllHighScore: boolean = false;
-  showAdmin =false;
+  amZiel= false;
 
   //upload
-  postResponse: any;
-  successResponse: string | undefined;
-  teamNameError = "";
   private lastHistory: string = '';
   private sepChar: string = '';
   private scoreId: number = 0;
   tourList: Tour[] | undefined;
   teamError: HighScore[] | undefined;
+
 
   constructor(private fotoOlService: FotoOlService) {
   }
@@ -57,25 +60,25 @@ export class FotoOlComponent {
   }
 
   init() {
-    //this.loadDefaultTeam();
     this.loadTeamList();
-    //this.loadPhotos();
 
-    this.showHelp = true;
-    this.hasStarted = false;
-    this.showFotos = false;
+    this.state = FotoOlState.showHelp;
     this.showMap = false;
     this.showHint = false;
     this.amZiel = false;
-    this.showAdmin =false;
+
+    this.index = 0;
+    this.lastHistory = '';
+    this.scoreId = 0;
+    this.sepChar = ''
 
     this.loadLocalStorrage();
   }
+
   loadPhotos(tourName: string) {
     this.fotoOlService.findAllByTour(tourName).subscribe(photos => {
       this.photos = photos;
     });
-
   }
 
   loadTeamList() {
@@ -84,6 +87,7 @@ export class FotoOlComponent {
       //this.loadPhotos();
     })
   }
+
   loadLocalStorrage() {
     let teamName = localStorage.getItem('teamName')
     if (teamName) {
@@ -108,30 +112,20 @@ export class FotoOlComponent {
       this.tourName = tourName;
       console.log('load tourName=', this.tourName);
       this.loadPhotos(tourName);
-      this.showHelp = false;
-      this.hasStarted = true;
-      this.showFotos = true;
+      this.state = FotoOlState.showFotos;
       this.showMap = false;
       this.showHint = false;
-      this.amZiel = false;
-      this.showAdmin =false;
       return;
     };
   }
-  // loadDefaultTeam() {
-  //   this.fotoOlService.getTour().subscribe((tourList)=> {
-  //     let tour = tourList.find((tour) => {
-  //       return tour.hidden === true;
-  //     })?.tourName;
-  //     if (tour) this.tourName = tour;
-  //     this.loadPhotos(tour);
-  //   })
-  // }
 
+  // Ablaufsteuerung
+  show(state: string) {
+    return this.state == state;
+  }
   setTeamName(teamName: string) {
     if (teamName === 'admin') {
-      this.showAdmin = true;
-      this.showHelp = false;
+      this.state = FotoOlState.showAdmin
       this.teamName = '';
         localStorage.removeItem('teamName');
     } else {
@@ -146,10 +140,7 @@ export class FotoOlComponent {
     this.loadPhotos(tourName);
     this.tourName = tourName;
     if (this.teamName != '') {
-      this.showHelp = false;
-      this.hasStarted = true;
-      this.showFotos = true;
-      this.showAdmin = false;
+      this.state = FotoOlState.showFotos;
     }
   }
 
@@ -160,8 +151,6 @@ export class FotoOlComponent {
     }
     return '';
   }
-
-
 
   /** Aktuelle Koordinaten speichern. */
   setCurrentCoordinates() {
@@ -183,9 +172,10 @@ export class FotoOlComponent {
   /** nächstes Foto anzeigen */
   nextPhoto() {
     localStorage.setItem('index', String(this.index+1));
-    this.showHint = false;
     this.lastDistance = this.getDistanceFromLatLonInM();
     this.result += this.lastDistance;
+
+    this.showHint = false;
     this.showMap = false;
 
     //History schreiben
@@ -203,6 +193,7 @@ export class FotoOlComponent {
       this.index ++;
       this.scoreId = id;
       localStorage.setItem('scoreId', id)
+
       //sind wir am Ziel
       // @ts-ignore
       if (this.index >= this.photos.length) {
@@ -219,15 +210,11 @@ export class FotoOlComponent {
   }
 
   doShowHighScore(allHighScore: string) {
-    this.showHelp = false;
     if (allHighScore === 'all') {
-      this.showHighScore = false;
-      this.showAllHighScore = true;
+      this.state = FotoOlState.showAllHighScore;
     } else {
-      this.showHighScore = true;
-      this.showAllHighScore = false;
+      this.state = FotoOlState.showHighScore;
     }
-    this.showFotos = false;
   }
 
   /** Hilfetext anzeigen
@@ -283,14 +270,6 @@ export class FotoOlComponent {
   }
 
   doShowHelp() {
-    this.showHelp = true;
-    this.hasStarted = false;
-    this.showFotos = false;
-    this.showMap = false;
-    this.showHint = false;
-    this.amZiel = false;
-    this.showHighScore = false;
-    this.showAllHighScore = false;
-    this.showAdmin =false;
+    this.init();
   }
 }

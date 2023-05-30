@@ -1,5 +1,5 @@
 <!-- Spielregeln anzeigen -->
-<div *ngIf="showHelp">
+<div *ngIf="show(FotoOlState.showHelp)">
   <app-help (teamNameEmitter)="setTeamName($event)"
             (teamErr)="setTeamError($event)"
             (showHighScore)="doShowHighScore($event)"
@@ -17,12 +17,8 @@
   <br>
 </div>
 
-<div *ngIf="!hasStarted ">
-
-</div>
-
 <!-- Ein Foto nach dem anderen anzeigen -->
-<div *ngIf="showFotos">
+<div *ngIf="show(FotoOlState.showFotos)">
   <p>
     Wandere zur Position wo dieses Foto ({{index+1}}/{{photos!.length}}) aufgenommen wurde.
   </p>
@@ -50,14 +46,14 @@
 </div>
 
 <!-- High Score anzeigen -->
-<div *ngIf="amZiel">
+<div *ngIf="show(FotoOlState.amZiel)">
   <h2>Du bist im Ziel</h2>
   <p>
     Distanz zu letzem Foto war {{lastDistance}}m.
     Gratuliere {{teamName}} du hast die Fotos nur um gesamt <b>{{result}}m</b> verfehlt.
   </p>
 </div>
-<div *ngIf="showHighScore">
+<div *ngIf="show(FotoOlState.showHighScore)">
   <app-ziel [isAdmin]="false"
             [tourName]="tourName"
   ></app-ziel>
@@ -66,8 +62,10 @@
 </div>
 
 <!--Alle High Score anzeigeb-->
-<div *ngIf="showAllHighScore">
-  <app-all-high-score [tourList]="tourList"
+<div *ngIf="show(FotoOlState.showAllHighScore)">
+  <app-all-high-score
+    [tourList]="tourList"
+    [isAdmin]="false"
   ></app-all-high-score>
   <br>
   <button class="button" (click)="doShowHelp()">Starte Foto-OL nochmals</button>
@@ -75,6 +73,6 @@
 
 <!--  Admin Seite anzeigen -->
 <app-admin
-  *ngIf="showAdmin"
+  *ngIf="show(FotoOlState.showAdmin)"
   (start)="init()">
 </app-admin>

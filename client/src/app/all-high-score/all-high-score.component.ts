@@ -9,4 +9,5 @@ import {Tour} from "../model/tour";
 })
 export class AllHighScoreComponent {
   @Input() tourList: Tour[] | undefined;
+  @Input() isAdmin: boolean | undefined;
 }
