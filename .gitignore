@@ -47,3 +47,4 @@ Thumbs.db
 /fotool/
 /client/ssl/
 /server/target/
+/server/src/main/resources/application-prod.yaml
