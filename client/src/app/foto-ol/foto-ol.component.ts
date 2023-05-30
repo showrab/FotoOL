@@ -75,7 +75,7 @@ export class FotoOlComponent {
     //------ zuerst tourName laden --------
     let tourName = localStorage.getItem('tourName')
     if (tourName) {
-      //this.score.tourName = tourName;
+      this.score.tourName = tourName;
       console.log('load tourName=', tourName);
       this.loadPhotos(tourName);
       this.state = FotoOlState.showFotos;
