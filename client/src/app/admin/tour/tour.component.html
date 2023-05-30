@@ -1,0 +1,9 @@
+<table>
+  <th>Tour</th>
+  <th>Hidden</th>
+  <tr *ngFor="let tour of tourList">
+    <td>{{tour.tourName}}</td>
+    <td><input [(ngModel)]="tour.hidden" type="checkbox" (click)="hide(tour)"></td>
+    <td><button class="button" (click)="delete(tour.id)">del</button> </td>
+  </tr>
+</table>

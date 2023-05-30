@@ -9,6 +9,6 @@
     "src/main.ts"
   ],
   "include": [
-    "client/src/**/*.d.ts"
+    "src/**/*.d.ts"
   ]
 }

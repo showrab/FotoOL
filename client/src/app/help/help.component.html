@@ -1,18 +1,31 @@
 <h2>So funktioniert der Foto-Orientierungslauf</h2>
 <p>
-Zuerst eine kurze Erklärung ...
-Du kriegst eine Foto angezeigt. 
-Geh zum Ort, wo diese Foto aufgenommen wurde und drück «ich bin am Ort...». Du kannst das für jeden Posten nur einmal machen.
+  Du kriegst mehrere Fotos nacheinander angezeigt.
+  Geh zum Ort, wo das Foto aufgenommen wurde und drück «ich bin am Ort...».
+  Du kannst das für jeden Posten nur einmal machen.
+  Je genauer du am Ort bist, wo das Foto aufgenommen wurde, desto besser.
 </p>
 <p>
-Wenn du nicht weisst, wo das ist, frag jemanden oder lass dir einen Hinweis anzeigen.
+  Wenn du nicht weisst, wo das ist, frag jemanden oder lass dir den Hinweis anzeigen.
+  Jeder Hinweis kostet dich aber {{hintPenalty}}m.
+</p>
+<p>
+  Wiederhole das, bis du mit allen Fotos durch bist..
+</p>
+<p>
+  Der <a (click)="doShowHighScore()" class="button">Gewinner</a> ist wer im Total am nächsten an den Orten war, wo die Fotos aufgenommen wurden.
 </p>
 <p>
   Hier gibst du deinen Teamnamen ein
-  <input #teamName
-         (keyup.enter)="setTeamName(teamName.value)"
-         (keyup)="setTeamName(teamName.value)"
-         (blur)="setTeamName(teamName.value)">
+  <input #inputTeamName
+         (keyup.enter)="setTeamName(inputTeamName.value)"
+         (keyup)="setTeamName(inputTeamName.value)"
+         (blur)="setTeamName(inputTeamName.value)"
+         [(ngModel)]="teamName"
+  >.
+  {{teamNameError}}
 </p>
 
-<p>Jetzt viel Glück.</p>
+<p>
+  Jetzt viel Glück.
+</p>

@@ -5,3 +5,26 @@ img {
 h1 {
   padding-top: 7px;
 }
+
+.background {
+  position: relative;
+  /*height: 100vh;*/
+  width: 100%;
+  display: flex;
+}
+
+.background::before {
+  content: "";
+  background-image: url('../assets/images/ol-karte.png');
+  background-size: cover;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  opacity: 0.10;
+}
+
+.app-foto {
+  position: relative;
+}

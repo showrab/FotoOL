@@ -1,0 +1,14 @@
+<img src="./assets/images/fotoliste.png" width="300px">
+<table>
+  <tr *ngFor="let photo of photos">
+    <td>
+      <div class="container">
+        <img src="{{photo.photoUrl}}" (click)="update(photo)" title="edit" height="200px"/>
+        <div class="top-right">
+          {{photo.tourName}}<br>
+          {{photo.sortOrder}}
+        </div>
+      </div>
+    </td>
+  </tr>
+</table>

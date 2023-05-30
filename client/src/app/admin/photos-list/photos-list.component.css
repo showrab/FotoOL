@@ -1,0 +1,28 @@
+td img {
+  border-radius: 5%;
+  border: 5px solid #0cf;
+}
+
+td img:hover {
+  border-radius: 5%;
+  border: 5px solid #008fb3;
+}
+
+/* Container holding the image and the text */
+.container {
+  position: relative;
+  text-align: right;
+  color: white;
+  text-shadow: 3px 3px 0 #000,
+  -1px -1px 0 #000,
+  1px -1px 0 #000,
+  -1px 1px 0 #000,
+  1px 1px 0 #000;
+}
+
+/* Top right text */
+.top-right {
+  position: absolute;
+  top: 8px;
+  right: 16px;
+}

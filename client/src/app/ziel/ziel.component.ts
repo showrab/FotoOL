@@ -1,4 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {FotoOlService} from "../foto-ol.service";
+import {HighScore} from "../model/high-score";
 
 @Component({
   selector: 'app-ziel',
@@ -6,31 +8,25 @@ import {Component, Input, OnInit} from '@angular/core';
   styleUrls: ['./ziel.component.css']
 })
 export class ZielComponent implements OnInit {
-  @Input() result: any;
-  @Input() teamName: any;
+  @Input() isAdmin: boolean | undefined;
+  @Input() tourName: string | undefined;
 
-  index: number = 0;
+  highScores: any;
 
-  hightScores = [
-    {
-      result: 10,
-      teamName: 'Andre'
-    },
-    {
-      result: 25,
-      teamName: 'Äxu'
-    },
-    {
-      result: 30,
-      teamName: 'Tinu'
-    },
-  ];
-
+  constructor(private fotoOlService: FotoOlService) {
+  }
   ngOnInit() {
-    this.hightScores.push({teamName: this.teamName, result: this.result});
-    this.hightScores.sort( (a, b) => {
-      return a.result - b.result;
-    })
+    this.loadHighScore();
   }
 
+  loadHighScore() {
+    this.fotoOlService.getHighScoreTour(this.tourName).subscribe( (highScores: HighScore) => {
+      this.highScores = highScores;
+    });
+  }
+  delete(id: number) {
+    this.fotoOlService.deleteHighScore(id).subscribe(() => {
+      this.loadHighScore();
+    });
+  }
 }

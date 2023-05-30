@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/foto-ol",
+            "outputPath": "../server/src/main/resources/public",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -46,6 +46,12 @@
               "outputHashing": "all"
             },
             "development": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with":"src/environments/environment-dev.ts"
+                }
+              ],
               "buildOptimizer": false,
               "optimization": false,
               "vendorChunk": true,
@@ -58,12 +64,20 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "foto-ol:build",
+            "ssl" : false,
+            "sslCert": "ssl/cert.pem",
+            "sslKey": "ssl/privkey.pem"
+          },
           "configurations": {
             "production": {
-              "browserTarget": "foto-ol:build:production"
+              "browserTarget": "foto-ol:build:production",
+              "ssl": true
             },
             "development": {
-              "browserTarget": "foto-ol:build:development"
+              "browserTarget": "foto-ol:build:development",
+              "ssl": false
             }
           },
           "defaultConfiguration": "development"
@@ -76,6 +90,7 @@
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
+
           "options": {
             "polyfills": [
               "zone.js",

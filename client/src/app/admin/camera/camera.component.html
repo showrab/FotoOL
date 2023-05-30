@@ -1,0 +1,9 @@
+<webcam
+  [trigger]="invokeObservable"
+  (imageCapture)="captureImg($event)"
+  [width]="innerWidth"
+></webcam>
+<br>
+<button class="button" (click)="getSnapshot()">
+  Neues Bild mit Koordinaten aufnehmen
+</button>

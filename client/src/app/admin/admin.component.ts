@@ -1,81 +1,175 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { Observable, Subject } from "rxjs";
-import { WebcamImage } from "ngx-webcam";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Photo} from "../model/photo";
+import {FotoOlService} from "../foto-ol.service";
+import {Tour} from "../model/tour";
+
+export const enum AdminState {
+  camera = 'camera',
+  capturedPhoto = 'capturedPhoto',
+  photoList = 'photoList',
+  tourList = 'tourList',
+  highScore = 'highScore',
+};
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
-export class AdminComponent {
-  @Output() adminPhoto = new EventEmitter;
-  @Output() clearPhotos = new EventEmitter;
-  showCapturedImage=false;
+export class AdminComponent implements OnInit {
+  @Output() start = new EventEmitter;
 
-  // Kamera
-  private trigger: Subject<any> = new Subject();
-  //webcamImage = WebcamImage;
-  public webcamImage!: WebcamImage;
-  private nextWebcam: Subject<any> = new Subject();
-  sysImage = '';
-  private video: HTMLElement | null | undefined;
-  private canvas: HTMLElement | null | undefined;
-  center: { lat: number; lng: number; } = {lng: 0, lat: 0};
-  skipMap: any;
-  hint: string = "";
+  // Ablaufsteuerung
+  private state: string = 'highScore';
+  //AdminState: AdminState | undefined;
 
-  // Kamera
-  initCamera() {
-    //this.trigger.next(void 0);
-    this.clearPhotos.emit();
-  }
-  
-  public getSnapshot(): void {
-    this.trigger.next(void 0);
-    this.showCapturedImage = true;
+  // Lists der Fotos vom Server
+  photoList: Photo[] | undefined;
+  // Liste der Touren
+  tourList: Tour[] | undefined;
+  // Foto mit Metadaten zum editieren
+  photo: Photo = new Photo();
+
+  constructor(private fotoOlService: FotoOlService) {}
+
+  ngOnInit(): void {
+    this.loadAllTours();
+    this.doShowHighScore();
   }
 
-  public captureImg(webcamImage: WebcamImage): void {
-    this.webcamImage = webcamImage;
-    this.sysImage = webcamImage!.imageAsDataUrl;
-    console.info('got webcam image', this.sysImage);
-    this.setCurrentCoordinates();
-  }
-  
-  public get invokeObservable(): Observable<any> {
-    let observable = this.trigger.asObservable();
-    return observable;
-  }
-  
-  public get nextWebcamObservable(): Observable<any> {
-    return this.nextWebcam.asObservable();
-  }
-
-  nextPhoto() {
-    throw new Error('Method not implemented.');
-  }
-
-  /** Aktuelle Koordinaten speichern. */
-  setCurrentCoordinates() {
-    navigator.geolocation.getCurrentPosition((position) => {
-      this.center = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      };
-      console.log("setCurrentCoordinates center:",this.center);
-
-      let photo = {
-        photoUrl: this.sysImage,
-        coordinates: this.center,
-        hint: this.hint
-      };
-
-      //console.log(photo);
-      this.adminPhoto.emit(photo);
+  /**
+   * lade Liste aller Fotos mit Metadaten
+   */
+  loadAllPhotos() {
+    this.fotoOlService.findAll().subscribe(photos => {
+      this.photoList = photos;
+      this.photo.sortOrder = photos.length + 1;
     });
   }
 
-  setHint(hint: string) {
-    this.hint = hint;
+  /**
+   * lade Liste aller Touren
+   */
+  private loadAllTours() {
+    this.fotoOlService.getTour().subscribe(tours => {
+      this.tourList = tours;
+      let defaultTour = tours.find( (tour ) => {
+        return tour.hidden === false;
+      })?.tourName;
+      if (defaultTour) {
+        this.photo.tourName = defaultTour;
+      }
+    });
+  }
+
+  // Ablaufsteuerung
+  show(state: string) {
+    return this.state == state;
+  }
+  doShowPhotoList() {
+    this.loadAllPhotos();
+    this.state = 'photoList';
+  }
+  doShowCamera() {
+    this.state = 'camera';
+  }
+  doShowCapturedPhoto() {
+    this.state = 'capturedPhoto';
+  }
+  doShowHighScore() {
+    this.state = 'highScore';
+  }
+  doShowTourList() {
+    this.loadAllTours();
+    this.state = 'tourList';
+  }
+  doCancelPhotoEdit() {
+    this.doShowPhotoList();
+  }
+  doStartFotoOl() {
+    this.start.emit();
+  }
+
+  // Foto von Kamera behandeln
+  setCapturedPhoto(photo: string) {
+    this.photo.photoUrl = photo;
+    console.log("photo.length", this.photo.photoUrl.length);
+    this.setCurrentCoordinates();
+
+    this.doShowCapturedPhoto();
+  }
+
+  /**
+   * Aktuelle Koordinaten speichern.
+   * */
+  setCurrentCoordinates() {
+    navigator.geolocation.getCurrentPosition((position) => {
+      this.photo.lat = position.coords.latitude;
+      this.photo.lng = position.coords.longitude;
+      this.photo.acuracy = position.coords.accuracy;
+      console.log("Koordinaten %f, %f. Abweichung %0.0fm",this.photo.lng, this.photo.lat, this.photo.acuracy);
+    });
+  }
+
+  /**
+   * Foto mit Metadaten speichern
+   * @param photo
+   */
+  savePhoto(photo: Photo) {
+    this.photo.hint = '';
+    //gibt es diese Tour schon?
+    console.log("photo.tour: ", photo.tourName);
+    let hasTour = this.tourList?.find((tour)=> {
+      return tour.tourName === photo.tourName;
+    })
+    console.log("hasTour: ", hasTour);
+    if (hasTour == undefined) {
+      let tour: Tour = {
+        id: 0,
+        tourName: photo.tourName,
+        hidden: false
+      }
+      console.log('Tour %s speichern', photo.tourName);
+      this.fotoOlService.saveTour(tour).subscribe(()=> {
+        console.log("saved tour: ", tour);
+      });
+    }
+
+    console.log('Speichere neues Bild');
+    this.fotoOlService.savePhoto(photo).subscribe((response) => {
+      this.doShowPhotoList();
+    });
+  }
+
+  /**
+   * Lösche Photo
+   * @param id
+   */
+  deletePhoto(id: number) {
+    this.fotoOlService.deletePhoto(id).subscribe( () => {
+      this.loadAllPhotos();
+      this.doShowPhotoList();
+    });
+  }
+
+  /**
+   * Bearbeite Metadaten zu Foto
+   * @param photo
+   */
+  editPhoto(photo: Photo) {
+    console.log("photo {id: %d, tour: %s, hidden: %s, sortOrder: %d, lat: %f, lng: %f, hint: %s}",this.photoList?.[0].id, this.photoList?.[0].tourName, photo.hidden, photo.sortOrder, photo.lat, photo.lng, photo.hint)
+    this.photo = photo;
+    this.doShowCapturedPhoto();
+  }
+
+  /**
+   * Selektierte Tabs anders färben
+   * @param state
+   */
+  getClass(state: string): string {
+    if (state === this.state) {
+      return 'w3-bar-item w3-button w3-red';
+    }
+    return 'w3-bar-item w3-button';
   }
 }

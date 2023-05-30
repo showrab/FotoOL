@@ -1,14 +1,17 @@
-<h2>Du bist im Ziel</h2>
-
-<p>
-  Gratuliere {{teamName}} du hast die Fotos nur um gesamt <b>{{result}}m</b> verfehlt.
-</p>
-<p>
-  Das sind deine Konkurenten:
-</p>
+<img src="./assets/images/highScore.png" width="300px">
 <table>
-  <tr *ngFor="let konkurent of hightScores; let i = index">
-    <td style="text-align: right;">{{konkurent.result}}m</td>
+  <th>Tour</th>
+  <th>Rang</th>
+  <th>Team</th>
+  <th>Distanz</th>
+  <th>Einzelzeit Nachweis</th>
+  <th *ngIf="isAdmin"></th>
+  <tr *ngFor="let konkurent of highScores; let i = index">
+    <td>{{konkurent.tourName}}</td>
+    <td>{{i+1}}</td>
     <td>{{konkurent.teamName}}</td>
+    <td style="text-align: right;">{{konkurent.score}}m</td>
+    <td>{{konkurent.history}}</td>
+    <td *ngIf="isAdmin"><button class="button" (click)="delete(konkurent.id)">del</button></td>
   </tr>
 </table>

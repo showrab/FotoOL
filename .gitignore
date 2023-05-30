@@ -42,3 +42,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
+/server/src/main/resources/keystore/
+/server/src/main/resources/public/
+/fotool/

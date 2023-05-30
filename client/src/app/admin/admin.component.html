@@ -1,30 +1,34 @@
-<div class="container mt-5">
-  <h2>Angular Webcam Capture Image from Camera</h2>
-  <div class="col-md-12">
-    <webcam
-      [trigger]="invokeObservable"
-      (imageCapture)="captureImg($event)"
-    ></webcam>
-  </div>
-  <p>
-    Hint
-    <input #hint
-           (keyup.enter)="setHint(hint.value)"
-           (blur)="setHint(hint.value)">
-  </p>
-
-  <div class="col-md-12">
-    <button class="button" (click)="initCamera()">
-      Kamera Starten
-    </button>
-    <button class="button" (click)="getSnapshot()">
-      Bild mit Koordinaten aufnehmen
-    </button>
-  </div>
-  <div class="col-12" *ngIf="showCapturedImage">
-    <div id="results">Koordinaten {{center.lat}}, {{center.lng}}</div>
-    <img [src]="webcamImage.imageAsDataUrl" height="400px" />
-  </div>
+<div class="w3-bar w3-black">
+  <button class="w3-bar-item w3-button" (click)="doStartFotoOl()">Start</button>
+  <button class="w3-bar-item w3-button" [className]="getClass('camera')" (click)="doShowCamera()">Kamera</button>
+  <button class="w3-bar-item w3-button" [className]="getClass('photoList')" (click)="doShowPhotoList()">Fotos</button>
+  <button class="w3-bar-item w3-button" [className]="getClass('tourList')" (click)="doShowTourList()">Tour</button>
+  <button class="w3-bar-item w3-button" [className]="getClass('highScore')" (click)="doShowHighScore()">HigScore</button>
 </div>
 
+<div *ngIf="show('camera')">
+  <app-camera (photo)="setCapturedPhoto($event)"></app-camera>
+</div>
 
+<div *ngIf="show('photoList')">
+  <app-photos-list
+    [photos]="photoList"
+    (updatePhoto)="editPhoto($event)"
+    (deletePhoto)="deletePhoto($event)">
+  </app-photos-list>
+</div>
+
+<div class="col-12" *ngIf="show('capturedPhoto')">
+  <app-photo-edit
+    [photo]="photo"
+    (savePhoto)="savePhoto($event)"
+    (cancel)="doCancelPhotoEdit()"
+    (delete)="deletePhoto($event)"
+  ></app-photo-edit>
+</div>
+
+<app-tour *ngIf="show('tourList')"></app-tour>
+
+<div *ngIf="show('highScore')">
+  <app-all-high-score [tourList]="tourList"></app-all-high-score>
+</div>

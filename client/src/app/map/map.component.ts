@@ -1,4 +1,5 @@
 import {Component, Input, AfterViewInit, SimpleChange} from '@angular/core';
+import {Center} from "../model/center";
 
 @Component({
   selector: 'app-map',
@@ -6,7 +7,7 @@ import {Component, Input, AfterViewInit, SimpleChange} from '@angular/core';
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements AfterViewInit{
-  @Input() center: any;
+  @Input() center: Center | undefined;
   zoom = 20;
   map: any;
   marker:any;
