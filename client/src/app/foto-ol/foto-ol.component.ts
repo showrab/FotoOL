@@ -20,17 +20,11 @@ export enum FotoOlState {
   styleUrls: ['./foto-ol.component.css']
 })
 export class FotoOlComponent {
-  teamName: string = '';
-  tourName: string = '';
-
   photos: Photo[] | undefined;
-  // Index des zu suchenden Fotos
-  index = 0;
 
   // aktuelle Koordinaten mit o,o initialisieren
   center: Center = {lng: 0, lat: 0};
-  // Strafpunkte (Summe der Distanz in Meter von den Foto-Koordinaten).
-  result = 0;
+  //letzte Distanz separat ausweisen
   lastDistance = 0;
 
   //Konfiguration
@@ -44,13 +38,13 @@ export class FotoOlComponent {
   showHint = false;
   amZiel= false;
 
-  //upload
-  private lastHistory: string = '';
-  private sepChar: string = '';
-  private scoreId: number = 0;
-  tourList: Tour[] | undefined;
-  teamError: HighScore[] | undefined;
+  //score wird gefüllt und in DB highScore gespeichert
+  score: HighScore = new HighScore();
 
+  private sepChar: string = '';
+
+  tourList: Tour[] | undefined;
+  myTourScoreList: HighScore[] | undefined;
 
   constructor(private fotoOlService: FotoOlService) {
   }
@@ -61,17 +55,6 @@ export class FotoOlComponent {
 
   init() {
     this.loadTeamList();
-
-    this.state = FotoOlState.showHelp;
-    this.showMap = false;
-    this.showHint = false;
-    this.amZiel = false;
-
-    this.index = 0;
-    this.lastHistory = '';
-    this.scoreId = 0;
-    this.sepChar = ''
-
     this.loadLocalStorrage();
   }
 
@@ -89,33 +72,48 @@ export class FotoOlComponent {
   }
 
   loadLocalStorrage() {
-    let teamName = localStorage.getItem('teamName')
-    if (teamName) {
-      this.teamName = teamName;
-      this.fotoOlService.findTeamName(teamName).subscribe( (team) => {
-        this.teamError = team;
-      });
-      console.log('load teamName=', this.teamName);
-    };
-    let index = localStorage.getItem('index');
-    if (index) {
-      this.index = Number(index);
-      console.log('load index=', this.index);
-    };
-    let scoreId = localStorage.getItem('scoreId');
-    if (scoreId) {
-      this.scoreId = Number(scoreId);
-      console.log('load scoreId=', this.scoreId);
-    }
+    //------ zuerst tourName laden --------
     let tourName = localStorage.getItem('tourName')
     if (tourName) {
-      this.tourName = tourName;
-      console.log('load tourName=', this.tourName);
+      //this.score.tourName = tourName;
+      console.log('load tourName=', tourName);
       this.loadPhotos(tourName);
       this.state = FotoOlState.showFotos;
       this.showMap = false;
       this.showHint = false;
-      return;
+    };
+    //-----jetzt teamName mit tourName finden und gefundene myTour in score ------
+    let teamName = localStorage.getItem('teamName')
+    if (teamName) {
+      this.score.teamName = teamName;
+      console.log('load teamName=', this.score.teamName);
+      this.fotoOlService.findTeamName(teamName).subscribe( (team) => {
+        this.myTourScoreList = team;
+        console.log('loaded tourList.lenght: ', team.length);
+        let myTour = team.find( team => {
+          return team.tourName == tourName;
+        })
+        console.log('loaded tour: ', myTour);
+        if (myTour) {
+          this.score = myTour;
+        }
+
+        //weitere gespeicherte Werte laden
+        //-------------
+        let index = localStorage.getItem('index');
+        if (index) this.score.index = Number(index);
+        console.log('load index=', this.score.index);
+        //-------------
+        let scoreId = localStorage.getItem('scoreId');
+        if (scoreId) this.score.id = Number(scoreId);
+        console.log('load scoreId=', this.score.id);
+        //-------------
+        let lastDistance = localStorage.getItem('lastDistance');
+        if (lastDistance) {
+          this.lastDistance = Number(lastDistance);
+          this.sepChar = ', ';
+        }
+      });
     };
   }
 
@@ -126,10 +124,10 @@ export class FotoOlComponent {
   setTeamName(teamName: string) {
     if (teamName === 'admin') {
       this.state = FotoOlState.showAdmin
-      this.teamName = '';
+      this.score.teamName = '';
         localStorage.removeItem('teamName');
     } else {
-      this.teamName = teamName;
+      this.score.teamName = teamName;
       localStorage.setItem('teamName',teamName);
     }
   }
@@ -138,16 +136,16 @@ export class FotoOlComponent {
   start(tourName: string) {
     localStorage.setItem('tourName', tourName);
     this.loadPhotos(tourName);
-    this.tourName = tourName;
-    if (this.teamName != '') {
+    this.score.tourName = tourName;
+    if (this.score.teamName != '') {
       this.state = FotoOlState.showFotos;
     }
   }
 
   /** URL zum aktuellen Bild. */
   getPhotoUrl() {
-    if (this.photos && this.index < this.photos?.length) {
-      return this.photos?.[this.index].photoUrl;
+    if (this.photos && this.score.index < this.photos?.length) {
+      return this.photos?.[this.score.index].photoUrl;
     }
     return '';
   }
@@ -171,40 +169,37 @@ export class FotoOlComponent {
 
   /** nächstes Foto anzeigen */
   nextPhoto() {
-    localStorage.setItem('index', String(this.index+1));
+    localStorage.setItem('index', String(this.score.index+1));
+
     this.lastDistance = this.getDistanceFromLatLonInM();
-    this.result += this.lastDistance;
+    localStorage.setItem('lastDistance', String(this.lastDistance));
+
+    this.score.score += this.lastDistance;
 
     this.showHint = false;
     this.showMap = false;
 
     //History schreiben
-    this.lastHistory = this.lastHistory + this.sepChar + this.lastDistance + 'm'
+    this.score.history = this.score.history + this.sepChar + this.lastDistance + 'm'
     this.sepChar = ', ';
-    let score: HighScore = {
-      id: this.scoreId,
-      tourName: this.tourName,
-      index: this.index,
-      teamName: this.teamName,
-      score: this.result,
-      history: this.lastHistory
-    };
-    this.fotoOlService.saveScore(score).subscribe( (id: any) => {
-      this.index ++;
-      this.scoreId = id;
+
+    this.fotoOlService.saveScore(this.score).subscribe( (id: any) => {
+      this.score.index ++;
+      this.score.id = id;
       localStorage.setItem('scoreId', id)
 
       //sind wir am Ziel
       // @ts-ignore
-      if (this.index >= this.photos.length) {
+      if (this.score.index >= this.photos.length) {
         this.doShowHighScore('one');
         this.amZiel = true;
         //gespeicherte Werte zurücksetzen
         localStorage.removeItem('tourName');
         localStorage.removeItem('index');
         localStorage.removeItem('scoreId');
+        localStorage.removeItem('lastDistance');
       }
-      console.log("index: %d, anzPhotos: %d", this.index, this.photos?.length)
+      console.log("index: %d, anzPhotos: %d", this.score.index, this.photos?.length)
     });
 
   }
@@ -222,10 +217,10 @@ export class FotoOlComponent {
    */
   getHint() {
     if (!this.showHint) {
-      this.result += this.hintPenalty;
+      this.score.score += this.hintPenalty;
     }
     this.showHint = true;
-    return this.photos?(this.photos)[this.index].hint:'';
+    return this.photos?(this.photos)[this.score.index].hint:'';
   }
 
   /** Bereschne die Distanz von deinem Standpunkt zu dem Foto
@@ -234,9 +229,9 @@ export class FotoOlComponent {
   getDistanceFromLatLonInM() {
     const r = 6373.0;
     const lat1 = this.center?.lat;
-    const lat2 = this.photos?this.photos[this.index].lat:0;
+    const lat2 = this.photos?this.photos[this.score.index].lat:0;
     const lon1 = this.center?.lng;
-    const lon2 = this.photos?this.photos[this.index].lng:0;
+    const lon2 = this.photos?this.photos[this.score.index].lng:0;
 
     const R = 6371; // Radius of the earth in km
     const dLat = this.deg2rad(lat2 - lat1);  // deg2rad below
@@ -255,13 +250,14 @@ export class FotoOlComponent {
     return deg * (Math.PI/180)
   }
 
-  setTeamError(err: HighScore[]) {
-    this.teamError = err;
+  setMyTourScoreList(scores: HighScore[]) {
+    this.myTourScoreList = scores;
   }
 
   hasTour(tourName: string): boolean {
-    if (this.teamError) {
-      let team = this.teamError.find((tour) => {
+    if (this.score.teamName === '') return true;
+    if (this.myTourScoreList) {
+      let team = this.myTourScoreList.find((tour) => {
         return tour.tourName === tourName;
       });
       if (team) return true;
@@ -271,5 +267,16 @@ export class FotoOlComponent {
 
   doShowHelp() {
     this.init();
+
+    this.state = FotoOlState.showHelp;
+    this.showMap = false;
+    this.showHint = false;
+    this.amZiel = false;
+
+    this.score.index = 0;
+    this.score.id = 0;
+    this.score.history = '';
+    this.sepChar = ''
+    this.lastDistance = 0;
   }
 }

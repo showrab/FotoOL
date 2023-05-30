@@ -13,7 +13,7 @@ export class HelpComponent {
   @Input() hintPenalty: number | undefined;
   @Input() teamName: string | undefined;
   @Output() teamNameEmitter = new EventEmitter<string>();
-  @Output() teamErr = new EventEmitter<HighScore[]>();
+  @Output() myTourScoreList = new EventEmitter<HighScore[]>();
   @Output() showHighScore = new EventEmitter<string>();
 
   teamNameError: string = '';
@@ -32,23 +32,23 @@ export class HelpComponent {
   setTeamName(teamName: string) {
     this.teamNameEmitter.emit(teamName);
     if (teamName) {
-      this.fotoOlService.findTeamName(teamName).subscribe( (team) => {
-        console.log("team ", team.length );
-        if (team.length <= 0) {
-          this.teamErr.emit(team);
+      this.fotoOlService.findTeamName(teamName).subscribe( (myTourScoreList) => {
+        console.log("team ", myTourScoreList.length );
+        if (myTourScoreList.length <= 0) {
+          this.myTourScoreList.emit(myTourScoreList);
           this.teamNameEmitter.emit(teamName);
           this.teamNameError = '';
         } else {
-          this.teamErr.emit(team);
+          this.myTourScoreList.emit(myTourScoreList);
           this.teamNameError = 'Team schon unterwegs, wähle anderen Namen.';
         }
       },error => {
-        this.teamErr.emit(undefined);
+        this.myTourScoreList.emit(undefined);
         this.teamNameEmitter.emit('');
         this.teamNameError = '';
       });
     } else {
-      this.teamErr.emit(undefined);
+      this.myTourScoreList.emit(undefined);
       this.teamNameError = '';
     }
   }

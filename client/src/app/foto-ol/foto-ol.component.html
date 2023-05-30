@@ -1,17 +1,17 @@
 <!-- Spielregeln anzeigen -->
 <div *ngIf="show(FotoOlState.showHelp)">
   <app-help (teamNameEmitter)="setTeamName($event)"
-            (teamErr)="setTeamError($event)"
+            (myTourScoreList)="setMyTourScoreList($event)"
             (showHighScore)="doShowHighScore($event)"
             [hintPenalty]="hintPenalty"
-            [teamName]="teamName"
+            [teamName]="score.teamName"
   ></app-help>
   <p>
     Wähle die Tour aus:
   </p>
   <span *ngFor="let tour of tourList">
     <button class="button" (click)="start(tour.tourName)" [disabled]="hasTour(tour.tourName)"
-            title="{{teamName?'':'zuerst Teamnamen eingeben'}}">{{tour.tourName}}</button>&nbsp;
+            title="{{score.teamName?'':'zuerst Teamnamen eingeben'}}">{{tour.tourName}}</button>&nbsp;
   </span>
   <br>
   <br>
@@ -20,7 +20,7 @@
 <!-- Ein Foto nach dem anderen anzeigen -->
 <div *ngIf="show(FotoOlState.showFotos)">
   <p>
-    Wandere zur Position wo dieses Foto ({{index+1}}/{{photos!.length}}) aufgenommen wurde.
+    Wandere zur Position wo dieses Foto ({{score.index+1}}/{{photos?.length}}) aufgenommen wurde.
   </p>
   <img src="{{getPhotoUrl()}}" height="300px" alt=""/>
 
@@ -30,7 +30,7 @@
   </div>
 
   <p>
-    Strafpunkte {{result}}m,
+    Strafpunkte {{score.score}}m,
     Distanz zu letzem Foto {{lastDistance}}m
   </p>
 
@@ -50,12 +50,12 @@
   <h2>Du bist im Ziel</h2>
   <p>
     Distanz zu letzem Foto war {{lastDistance}}m.
-    Gratuliere {{teamName}} du hast die Fotos nur um gesamt <b>{{result}}m</b> verfehlt.
+    Gratuliere {{score.teamName}} du hast die Fotos nur um gesamt <b>{{score.score}}m</b> verfehlt.
   </p>
 </div>
 <div *ngIf="show(FotoOlState.showHighScore)">
   <app-ziel [isAdmin]="false"
-            [tourName]="tourName"
+            [tourName]="score.tourName"
   ></app-ziel>
   <br>
   <button class="button" (click)="doShowHelp()">Starte Foto-OL nochmals</button>
