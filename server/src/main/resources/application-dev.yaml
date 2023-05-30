@@ -1,0 +1,13 @@
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  sql:
+    init:
+      mode: always
+      platform: dev
+
+web:
+  cors:
+    allowed-origins: "http://localhost:4200"

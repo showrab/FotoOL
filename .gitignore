@@ -45,3 +45,5 @@ Thumbs.db
 /server/src/main/resources/keystore/
 /server/src/main/resources/public/
 /fotool/
+/client/ssl/
+/server/target/
