@@ -117,7 +117,6 @@ export class AdminComponent implements OnInit {
    * @param photo
    */
   savePhoto(photo: Photo) {
-    this.photo.hint = '';
     //gibt es diese Tour schon?
     console.log("photo.tour: ", photo.tourName);
     let hasTour = this.tourList?.find((tour)=> {
@@ -138,6 +137,7 @@ export class AdminComponent implements OnInit {
 
     console.log('Speichere neues Bild');
     this.fotoOlService.savePhoto(photo).subscribe((response) => {
+      this.photo.hint = '';
       this.doShowPhotoList();
     });
   }
