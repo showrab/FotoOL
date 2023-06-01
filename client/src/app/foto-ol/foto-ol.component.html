@@ -10,8 +10,14 @@
     Wähle die Tour aus:
   </p>
   <span *ngFor="let tour of tourList">
-    <button class="button" (click)="start(tour.tourName)" [disabled]="hasTour(tour.tourName)"
-            title="{{score.teamName?'':'zuerst Teamnamen eingeben'}}">{{tour.tourName}}</button>&nbsp;
+    <button 
+      class="button" 
+      (click)="start(tour.tourName)" 
+      [disabled]="hasTour(tour.tourName)"
+      title="{{score.teamName?'':'zuerst Teamnamen eingeben'}}"
+    >
+      {{tour.tourName}}
+    </button>&nbsp;
   </span>
   <br>
   <br>

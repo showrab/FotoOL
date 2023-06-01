@@ -33,7 +33,7 @@ export class HelpComponent {
     this.teamNameEmitter.emit(teamName);
     if (teamName) {
       this.fotoOlService.findTeamName(teamName).subscribe( (myTourScoreList) => {
-        console.log("team ", myTourScoreList.length );
+        console.log('%d gefundene Touren zu Team', myTourScoreList.length );
         if (myTourScoreList.length <= 0) {
           this.myTourScoreList.emit(myTourScoreList);
           this.teamNameEmitter.emit(teamName);

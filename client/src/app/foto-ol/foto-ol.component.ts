@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
-import {Center} from "../model/center";
-import {Photo} from "../model/photo";
-import {FotoOlService} from "../foto-ol.service";
-import {HighScore} from "../model/high-score";
-import {Tour} from "../model/tour";
-import { NgxSpinner, NgxSpinnerService } from 'ngx-spinner';
+import { Component, OnInit } from '@angular/core';
+import { Center } from "../model/center";
+import { Photo } from "../model/photo";
+import { FotoOlService } from "../foto-ol.service";
+import { HighScore } from "../model/high-score";
+import { Tour } from "../model/tour";
+import { NgxSpinnerService } from 'ngx-spinner';
 
 export enum FotoOlState {
   showHelp = 'showHelp',
@@ -20,7 +20,7 @@ export enum FotoOlState {
   templateUrl: './foto-ol.component.html',
   styleUrls: ['./foto-ol.component.css']
 })
-export class FotoOlComponent {
+export class FotoOlComponent implements OnInit{
   photos: Photo[] | undefined;
 
   // aktuelle Koordinaten mit o,o initialisieren
@@ -52,6 +52,9 @@ export class FotoOlComponent {
     private spinner: NgxSpinnerService
     ) {
   }
+  ngOnInit(): void {
+    this.init();
+  }
 
   init() {
     this.loadTeamList();
@@ -72,11 +75,12 @@ export class FotoOlComponent {
   }
 
   loadLocalStorrage() {
+    console.log('Lokal gespeicherte Werte laden');
     //------ zuerst tourName laden --------
     let tourName = localStorage.getItem('tourName')
     if (tourName) {
       this.score.tourName = tourName;
-      console.log('load tourName=', tourName);
+      console.log('  load tourName=', tourName);
       this.loadPhotos(tourName);
       this.state = FotoOlState.showFotos;
       this.showMap = false;
@@ -86,27 +90,31 @@ export class FotoOlComponent {
     let teamName = localStorage.getItem('teamName')
     if (teamName) {
       this.score.teamName = teamName;
-      console.log('load teamName=', this.score.teamName);
+      console.log('  load teamName=', this.score.teamName);
       this.fotoOlService.findTeamName(teamName).subscribe( (team) => {
         this.myTourScoreList = team;
-        console.log('loaded tourList.lenght: ', team.length);
+        console.log('  loaded tourList.lenght: ', team.length);
+        console.log('  loaded tourList[0]: ', team[0]);
         let myTour = team.find( team => {
           return team.tourName == tourName;
         })
-        console.log('loaded tour: ', myTour);
+        console.log('  loaded tour: ', myTour);
         if (myTour) {
           this.score = myTour;
+        } else {
+          this.score.score = 0;
         }
+        console.log('  score:', this.score);
 
         //weitere gespeicherte Werte laden
         //-------------
         let index = localStorage.getItem('index');
         if (index) this.score.index = Number(index);
-        console.log('load index=', this.score.index);
+        console.log('  load index=', this.score.index);
         //-------------
         let scoreId = localStorage.getItem('scoreId');
         if (scoreId) this.score.id = Number(scoreId);
-        console.log('load scoreId=', this.score.id);
+        console.log('  load scoreId=', this.score.id);
         //-------------
         let lastDistance = localStorage.getItem('lastDistance');
         if (lastDistance) {
@@ -134,6 +142,7 @@ export class FotoOlComponent {
 
   /** OL Starten */
   start(tourName: string) {
+    console.log("Starte Tour ", tourName);
     localStorage.setItem('tourName', tourName);
     this.loadPhotos(tourName);
     this.score.tourName = tourName;
@@ -152,6 +161,7 @@ export class FotoOlComponent {
 
   /** Aktuelle Koordinaten speichern. */
   setCurrentCoordinates() {
+    this.spinner.show();
     navigator.geolocation.getCurrentPosition((position) => {
       this.center = {
         lat: position.coords.latitude,
@@ -169,6 +179,7 @@ export class FotoOlComponent {
 
   /** nächstes Foto anzeigen */
   nextPhoto() {
+    this.spinner.show();
     localStorage.setItem('index', String(this.score.index+1));
 
     this.lastDistance = this.getDistanceFromLatLonInM();
@@ -198,6 +209,7 @@ export class FotoOlComponent {
         localStorage.removeItem('index');
         localStorage.removeItem('scoreId');
         localStorage.removeItem('lastDistance');
+        this.spinner.hide();
       }
       console.log("index: %d, anzPhotos: %d", this.score.index, this.photos?.length)
     });

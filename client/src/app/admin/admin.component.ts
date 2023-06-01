@@ -1,7 +1,8 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Photo} from "../model/photo";
-import {FotoOlService} from "../foto-ol.service";
-import {Tour} from "../model/tour";
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Photo } from "../model/photo";
+import { FotoOlService } from "../foto-ol.service";
+import { Tour } from "../model/tour";
+import { NgxSpinnerService } from 'ngx-spinner';
 
 export enum AdminState {
   camera = 'camera',
@@ -31,7 +32,9 @@ export class AdminComponent implements OnInit {
   photo: Photo = new Photo();
 
 
-  constructor(private fotoOlService: FotoOlService) {}
+  constructor(
+    private fotoOlService: FotoOlService,
+    private spinner: NgxSpinnerService) {}
 
   ngOnInit(): void {
     this.loadAllTours();
