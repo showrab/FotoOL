@@ -147,3 +147,6 @@ Testen ob Image foto-ol funktioniert
 [http://server:8080](http://hpe:8080)
 
 
+##Links
+https://github.com/Napster2210/ngx-spinner
+https://napster2210.github.io/ngx-spinner/

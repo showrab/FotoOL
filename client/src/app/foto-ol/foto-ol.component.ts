@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import {Center} from "../model/center";
 import {Photo} from "../model/photo";
 import {FotoOlService} from "../foto-ol.service";
 import {HighScore} from "../model/high-score";
 import {Tour} from "../model/tour";
+import { NgxSpinner, NgxSpinnerService } from 'ngx-spinner';
 
 export enum FotoOlState {
   showHelp = 'showHelp',
@@ -46,11 +47,10 @@ export class FotoOlComponent {
   tourList: Tour[] | undefined;
   myTourScoreList: HighScore[] | undefined;
 
-  constructor(private fotoOlService: FotoOlService) {
-  }
-
-  ngOnInit() {
-    this.init();
+  constructor(
+    private fotoOlService: FotoOlService,
+    private spinner: NgxSpinnerService
+    ) {
   }
 
   init() {

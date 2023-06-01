@@ -1,9 +1,7 @@
 package ch.showrab.fotool.server.controllers;
 
 import ch.showrab.fotool.server.entities.HighScore;
-import ch.showrab.fotool.server.entities.Photo;
 import ch.showrab.fotool.server.repositories.HighScoreRepository;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
