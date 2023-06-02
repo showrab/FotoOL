@@ -1,0 +1,32 @@
+/**
+ * Container class for a captured webcam image
+ * @author basst314, davidshen84
+ */
+export declare class WebcamImage {
+    constructor(imageAsDataUrl: string, mimeType: string, imageData: ImageData);
+    private readonly _mimeType;
+    private _imageAsBase64;
+    private readonly _imageAsDataUrl;
+    private readonly _imageData;
+    /**
+     * Extracts the Base64 data out of the given dataUrl.
+     * @param dataUrl the given dataUrl
+     * @param mimeType the mimeType of the data
+     */
+    private static getDataFromDataUrl;
+    /**
+     * Get the base64 encoded image data
+     * @returns base64 data of the image
+     */
+    get imageAsBase64(): string;
+    /**
+     * Get the encoded image as dataUrl
+     * @returns the dataUrl of the image
+     */
+    get imageAsDataUrl(): string;
+    /**
+     * Get the ImageData object associated with the canvas' 2d context.
+     * @returns the ImageData of the canvas's 2d context.
+     */
+    get imageData(): ImageData;
+}

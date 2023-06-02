@@ -1,0 +1,3 @@
+export declare class WebcamMirrorProperties {
+    x: string;
+}

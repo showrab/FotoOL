@@ -1,0 +1,7 @@
+export declare class WebcamUtil {
+    /**
+     * Lists available videoInput devices
+     * @returns a list of media device info.
+     */
+    static getAvailableVideoInputs(): Promise<MediaDeviceInfo[]>;
+}

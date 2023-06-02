@@ -1,0 +1,4 @@
+export declare class WebcamInitError {
+    message: string;
+    mediaStreamError: DOMException;
+}

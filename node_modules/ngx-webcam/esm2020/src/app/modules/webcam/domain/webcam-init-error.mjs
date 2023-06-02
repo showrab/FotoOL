@@ -1,0 +1,7 @@
+export class WebcamInitError {
+    constructor() {
+        this.message = null;
+        this.mediaStreamError = null;
+    }
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoid2ViY2FtLWluaXQtZXJyb3IuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi9zcmMvYXBwL21vZHVsZXMvd2ViY2FtL2RvbWFpbi93ZWJjYW0taW5pdC1lcnJvci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxNQUFNLE9BQU8sZUFBZTtJQUE1QjtRQUNTLFlBQU8sR0FBVyxJQUFJLENBQUM7UUFDdkIscUJBQWdCLEdBQWlCLElBQUksQ0FBQztJQUMvQyxDQUFDO0NBQUEiLCJzb3VyY2VzQ29udGVudCI6WyJleHBvcnQgY2xhc3MgV2ViY2FtSW5pdEVycm9yIHtcclxuICBwdWJsaWMgbWVzc2FnZTogc3RyaW5nID0gbnVsbDtcclxuICBwdWJsaWMgbWVkaWFTdHJlYW1FcnJvcjogRE9NRXhjZXB0aW9uID0gbnVsbDtcclxufVxyXG4iXX0=
