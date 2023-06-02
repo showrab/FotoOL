@@ -17,11 +17,13 @@
 </p>
 <p>
   Hier gibst du deinen Teamnamen ein
-  <input #inputTeamName
-         (keyup.enter)="setTeamName(inputTeamName.value)"
-         (keyup)="setTeamName(inputTeamName.value)"
-         (blur)="setTeamName(inputTeamName.value)"
-         [(ngModel)]="teamName"
+         <!-- (blur)="setTeamName(inputTeamName.value)" -->
+  <input 
+    #inputTeamName
+    (keyup.enter)="setTeamName(inputTeamName.value)"
+    (keyup)="setTeamName(inputTeamName.value)"
+
+    [(ngModel)]="teamName"
   >.
   {{teamNameError}}
 </p>

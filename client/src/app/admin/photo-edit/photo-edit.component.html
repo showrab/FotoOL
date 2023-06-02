@@ -2,7 +2,29 @@
   <div>
     <img [src]="photo.photoUrl" height="400px" />
   </div>
+
   <table>
+    <tr>
+      <td>File</td>
+      <td>
+        <input
+          id="file"
+          type="file"
+          class="form-control"
+          (change)="onFileChange($event)">
+      </td>
+    </tr>
+    <tr *ngIf="realUrl">
+      <td first>URL</td>
+      <td second><input [(ngModel)]="photo.photoUrl"></td>
+    </tr>
+    <tr *ngIf="!realUrl">
+      <td first>URL</td>
+      <td second>
+        <input [(ngModel)]="photoUrl"
+               (ngModelChange)="setPhotoUrl($event)"
+        ></td>
+    </tr>
     <tr>
       <td>Tour</td>
       <td><input [(ngModel)]="photo.tourName"></td>
@@ -27,8 +49,14 @@
       <td>Hint</td>
       <td><input [(ngModel)]="photo.hint"></td>
     </tr>
+    <tr>
+      <td></td>
+      <td>
+        <br>
+        <button class="button" (click)="doSavePhoto()">save</button>
+        <button class="button" (click)="doCancel()">cancel</button>
+        <button (click)="doDelete(photo.id)" class="button">del</button>
+      </td>
+    </tr>
   </table>
 
-  <button class="button" (click)="doSavePhoto()">save</button>
-  <button class="button" (click)="doCancel()">cancel</button>
-  <button (click)="doDelete(photo.id)" class="button">del</button>

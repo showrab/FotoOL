@@ -1,6 +1,5 @@
 package ch.showrab.fotool.server.repositories;
 
-import ch.showrab.fotool.server.entities.Photo;
 import ch.showrab.fotool.server.entities.Tour;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
