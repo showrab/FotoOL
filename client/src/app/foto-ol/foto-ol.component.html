@@ -10,9 +10,9 @@
     Wähle die Tour aus:
   </p>
   <span *ngFor="let tour of tourList">
-    <button 
-      class="button" 
-      (click)="start(tour.tourName)" 
+    <button
+      class="button"
+      (click)="start(tour.tourName)"
       [disabled]="hasTour(tour.tourName)"
       title="{{score.teamName?'':'zuerst Teamnamen eingeben'}}"
     >
@@ -42,7 +42,7 @@
 
   <button *ngIf="!showHint" (click)="getHint()"class="button">Keine Ahnung wo das Foto aufgenommen wurde. Hilf mir auf die Sprünge</button>
   <br><br>
-  <button (click)="setCurrentCoordinates()" class="button">Ich bin am Punkt wo Fotografiert wurde</button>
+  <button (click)="setCurrentCoordinates()" class="button">Ich bin da ...</button>
 </div>
 
 <!-- ToDo: @Martin OSM einblenden um die Position zu kontrollieren -->
@@ -52,11 +52,14 @@
 </div>
 
 <!-- High Score anzeigen -->
-<div *ngIf="show(FotoOlState.amZiel)">
+<div *ngIf="amZiel">
   <h2>Du bist im Ziel</h2>
   <p>
     Distanz zu letzem Foto war {{lastDistance}}m.
     Gratuliere {{score.teamName}} du hast die Fotos nur um gesamt <b>{{score.score}}m</b> verfehlt.
+  </p>
+  <p>
+    Komm zurück in die Viva Kirche, du hast dir ein Getränk verdient.
   </p>
 </div>
 <div *ngIf="show(FotoOlState.showHighScore)">

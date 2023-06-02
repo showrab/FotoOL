@@ -1,7 +1,7 @@
 <h2>So funktioniert der Foto-Orientierungslauf</h2>
 <p>
   Du kriegst mehrere Fotos nacheinander angezeigt.
-  Geh zum Ort, wo das Foto aufgenommen wurde und drück «ich bin am Ort...».
+  Geh zum Ort, wo das Foto aufgenommen wurde und drück «ich bin da...», danach wird das nächst Foto angezeigt.
   Du kannst das für jeden Posten nur einmal machen.
   Je genauer du am Ort bist, wo das Foto aufgenommen wurde, desto besser.
 </p>
@@ -10,15 +10,15 @@
   Jeder Hinweis kostet dich aber {{hintPenalty}}m.
 </p>
 <p>
-  Wiederhole das, bis du mit allen Fotos durch bist..
+  Wiederhole das, bis du mit allen Fotos durch bist. Am besten schalest du dein GPS schon vor dem Start ein.
 </p>
 <p>
-  Der <a (click)="doShowHighScore()" class="button">Gewinner</a> ist wer im Total am nächsten an den Orten war, wo die Fotos aufgenommen wurden.
+  <a (click)="doShowHighScore()" class="button">Gewonnen</a> hat wer im Total am nächsten an den Orten war, wo die Fotos aufgenommen wurden.
 </p>
 <p>
   Hier gibst du deinen Teamnamen ein
          <!-- (blur)="setTeamName(inputTeamName.value)" -->
-  <input 
+  <input
     #inputTeamName
     (keyup.enter)="setTeamName(inputTeamName.value)"
     (keyup)="setTeamName(inputTeamName.value)"
