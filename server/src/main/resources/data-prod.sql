@@ -27,7 +27,7 @@ insert into photo (tour_name, hidden, sort_order, photo_url, lat, lng, hint)
 values ('Einfach ca. 15min', false, 5, '../../assets/images/e.5.0287.jpeg', 46.76036, 7.63145, 'Tankstelle');
 
 insert into photo (tour_name, hidden, sort_order, photo_url, lat, lng, hint)
-values ('Einfach ca. 15min', false, 6, '../../assets/images/e.6.5407.jpeg', 46.76120, 7.62944, 'Berntorkreisel');
+values ('Einfach ca. 15min', false, 6, '../../assets/images/e.6.0333.jpeg', 46.76120, 7.62944, 'Berntorkreisel');
 
 insert into photo (tour_name, hidden, sort_order, photo_url, lat, lng, hint)
 values ('Einfach ca. 15min', false, 7, '../../assets/images/e.7.0336.jpeg', 46.76177, 7.62974, 'Steffisburgstrasse');
@@ -65,7 +65,7 @@ insert into photo (tour_name, hidden, sort_order, photo_url, lat, lng, hint)
 values ('Schwierig ca. 30min', false, 10, '../../assets/images/Sch.10.0284.jpeg', 46.76100, 7.63161, 'Spital');
 
 insert into photo (tour_name, hidden, sort_order, photo_url, lat, lng, hint)
-values ('Schwierig ca. 30min', false, 11, '../../assets/images/Sch.11.0288.jpeg', 46.,76000, 7.63155, 'Parkhaus');
+values ('Schwierig ca. 30min', false, 11, '../../assets/images/Sch.11.0288.jpeg', 46.76000, 7.63155, 'Parkhaus');
 
 insert into photo (tour_name, hidden, sort_order, photo_url, lat, lng, hint)
 values ('Schwierig ca. 30min', false, 12, '../../assets/images/Sch.12.0295.jpeg', 46.75904, 7.63230, 'Schlossberg Süd');
