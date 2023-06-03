@@ -12,7 +12,9 @@ spring:
   jpa:
     defer-datasource-initialization: true
     database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
     hibernate:
+      #create: erstellt Tabellen neu
       ddl-auto: create
 
 

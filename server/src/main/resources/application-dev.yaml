@@ -5,6 +5,7 @@ spring:
       path: /h2-console
   sql:
     init:
+      # never data.sql wird nicht ausgeführt
       mode: always
       platform: dev
 
