@@ -26,7 +26,7 @@
 <!-- Ein Foto nach dem anderen anzeigen -->
 <div *ngIf="show(FotoOlState.showFotos)">
   <p>
-    Wandere zur Position wo dieses Foto ({{score.index+1}}/{{photos?.length}}) aufgenommen wurde.
+    Wandere {{distanzRichtung}} zur Position wo dieses Foto ({{score.index+1}}/{{photos?.length}}) aufgenommen wurde.
   </p>
   <img src="{{getPhotoUrl()}}" height="300px" alt=""/>
 
@@ -42,7 +42,7 @@
 
   <button *ngIf="!showHint" (click)="getHint()"class="button">Keine Ahnung wo das Foto aufgenommen wurde. Hilf mir auf die Sprünge</button>
   <br><br>
-  <button (click)="setCurrentCoordinates()" class="button">Ich bin da ...</button>
+  <button (click)="setCurrentCoordinates(false)" class="button">Ich bin da ...</button>
 </div>
 
 <!-- ToDo: @Martin OSM einblenden um die Position zu kontrollieren -->
