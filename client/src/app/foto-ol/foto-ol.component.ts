@@ -333,7 +333,7 @@ export class FotoOlComponent implements OnInit{
 
     //console.log("Richtung grad", grad);
     let pm = 11.25;
-    if (grad > 0 - pm && grad <= 0 + pm) return "Nord N";
+    if (grad > 360 - pm && grad <= 0 + pm) return "Nord";
     if (grad > 22.5 - pm && grad <= 22.5 + pm) return "Nordnordost";
     if (grad > 45 - pm && grad <= 45 + pm) return "Nordost";
     if (grad > 67.5 - pm && grad <= 67.5 + pm) return "Ostnordost";
