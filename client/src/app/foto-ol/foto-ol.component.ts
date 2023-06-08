@@ -23,7 +23,7 @@ export class FotoOlComponent implements OnInit{
   photos: Photo[] | undefined;
 
   // aktuelle Koordinaten mit o,o initialisieren
-  center: Center = {lng: 0, lat: 0};
+  center: Center = {lng: 0, lat: 0, acc: 0};
   //letzte Distanz separat ausweisen
   lastDistance = 0;
   //Distanz und Richtung
@@ -31,7 +31,7 @@ export class FotoOlComponent implements OnInit{
   richtung: string = '';
 
   //Konfiguration
-  skipMap = true;
+  skipMap = false;
   hintPenalty: number = 50;
 
   // Ablaufsteuerung
@@ -79,6 +79,7 @@ export class FotoOlComponent implements OnInit{
         this.center = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
+          acc: position.coords.accuracy,
         };
         this.getDistanceFromLatLonInM(this.center);
       });
@@ -177,6 +178,7 @@ export class FotoOlComponent implements OnInit{
       this.center = {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
+        acc: position.coords.accuracy,
       };
       //console.log("setCurrentCoordinates center:",this.center);
       if (init) {
@@ -185,6 +187,7 @@ export class FotoOlComponent implements OnInit{
         if (this.skipMap) {
           this.nextPhoto();
         } else {
+          this.spinner.hide();
           this.showMap = true;
         }
       }
@@ -354,4 +357,7 @@ export class FotoOlComponent implements OnInit{
 
   protected readonly Math = Math;
 
+  setNewCenter(center: Center) {
+    this.center = center;
+  }
 }

@@ -61,4 +61,8 @@ export class FotoOlService {
   deleteTour(id: number) {
     return this.http.delete(this.photoServiceUrl + 'tour/delete/'+id);
   }
+
+  getBaseUrl() {
+    return this.photoServiceUrl;
+  }
 }

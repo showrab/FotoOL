@@ -39,11 +39,11 @@
     </tr>
     <tr>
       <td>lng</td>
-      <td><input [(ngModel)]="photo.lng"></td>
+      <td><input [(ngModel)]="photo.lng" (ngModelChange)="setNewCenter({lat: photo.lat, lng: photo.lng, acc: 0})"></td>
     </tr>
     <tr>
       <td>lat</td>
-      <td><input [(ngModel)]="photo.lat"></td>
+      <td><input [(ngModel)]="photo.lat" (ngModelChange)="setNewCenter({lat: photo.lat, lng: photo.lng, acc: 0})"></td>
     </tr>
     <tr>
       <td>Hint</td>
@@ -60,3 +60,7 @@
     </tr>
   </table>
 
+  <app-map
+    [center]="center"
+    (newCenter)="setNewCenter($event)"
+  ></app-map>

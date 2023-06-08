@@ -21,6 +21,7 @@ import { environment } from "../environments/environment";
 import { AllHighScoreComponent } from './all-high-score/all-high-score.component';
 import { InterceptorService } from './interceptor.service';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
     FormsModule,
     NgxSpinnerModule,
     BrowserAnimationsModule,
+    LeafletModule,
   ],
   providers: [{ provide: ENVIRONMENT, useValue: environment },
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }],

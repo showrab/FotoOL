@@ -9,6 +9,10 @@ Technisch wird das gelöst indem man am gefundenen Foto-Punkt die Koordinaten au
 Das zurückliefern der Koordinaten vom Browser ist nur in sicheren Webseiten erlaubt (https://).
 
 Karte OpenSteetMap
+https://github.com/lilcodelab/angular-osm-leaflet
+
+https://stackblitz.com/edit/mn-angular-leaflet-markers?file=src%2Fapp%2Fapp.module.ts
+
 Kamera https://stackblitz.com/edit/ngx-webcam-demo?file=src%2Findex.html,src%2Fapp%2Fcamera%2Fcamera.component.html
 
 ## Install Angular

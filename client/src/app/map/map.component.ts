@@ -1,4 +1,6 @@
-import {Component, Input, AfterViewInit, SimpleChange} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from "@angular/core";
+import * as L from "leaflet";
+import {LayerGroup, MapOptions, Marker, MarkerOptions, tileLayer} from "leaflet";
 import {Center} from "../model/center";
 
 @Component({
@@ -6,74 +8,105 @@ import {Center} from "../model/center";
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements AfterViewInit{
-  @Input() center: Center | undefined;
-  zoom = 20;
-  map: any;
-  marker:any;
+export class MapComponent implements OnInit, OnChanges {
+  @Input() center: Center = {lat: 46.7719464, lng: 7.6138311, acc: 0};
+  @Output() newCenter = new EventEmitter<Center>();
 
-  constructor() {
-    console.log("Constructor center:", this.center);
+  map: L.Map | undefined;
+  markersLayer = new L.LayerGroup();
+  sMarkersLayer: LayerGroup | undefined;
+  zoomLevel = 19;
+  iconUrl = "../assets/images/icons8-mouse-pointer-80_.png";
+  marker: Marker | undefined;
+
+  options: L.MapOptions = {
+    zoom: this.zoomLevel,
+    touchZoom: false,
+    scrollWheelZoom: false,
+    zoomControl: false,
+    boxZoom: false,
+    center: L.latLng(this.center.lat, this.center.lng),
+    layers: [
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      })
+    ]
+  };
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log("changes: ", changes);
+    // Karte neu zuentrieren
+    this.map?.setView(this.center);
+
+    this.sMarkersLayer?.clearLayers();
+    let icon = new L.DivIcon({
+      html: `<img src='${this.iconUrl}'/> <span>${''}</span>`
+    });
+    //Marker hinzufügen
+    // @ts-ignore
+    this.marker = L.marker([this.center.lat, this.center.lng], {icon}).addTo(this.map);
+    // @ts-ignore
+    this.sMarkersLayer.addLayer(this.marker);
+    // @ts-ignore
+    this.sMarkersLayer?.addLayer(L.circle([this.center.lat, this.center.lng], {radius: this.center.acc /2 }).addTo(this.map));
   }
 
-  ngAfterViewInit(): void {
-    // console.log("ngAfterViewInit center:", this.center);
-    //const map = document.getElementById("map");
-    // this.map = new google.maps.Map(
-    //   document.getElementById("map") as HTMLElement,
-    //   {
-    //     mapTypeId: 'hybrid',
-    //     zoomControl: true,
-    //     scrollwheel: false,
-    //     disableDoubleClickZoom: true,
-    //     maxZoom: 20,
-    //     minZoom: 0,
-    //     heading: 180,
-    //     zoom: this.zoom,
-    //     center: this.center
-    //   }
-    // );
-    // this.marker = new google.maps.Marker({
-    //   position: {
-    //     lat: 46.76213,
-    //     lng: 7.63025
-    //   },
-    //   map: this.map,
-    //   title: "Von hier wurde Fotografiert",
-    //   draggable: true
-    // });
+  onMapReady(map: L.Map) {
+    setTimeout(() => {
+      // Karte neu zuentrieren
+      this.map?.setView(this.center, this.zoomLevel);
+
+      map.invalidateSize();
+      this.map = map;
+      map.addLayer(this.markersLayer);
+      this.createStations();
+
+      // @ts-ignore
+      this.map.on('click', (e) => {
+        let icon = new L.DivIcon({
+          html: `<img src='${this.iconUrl}'/> <span>${''}</span>`
+        });
+        this.sMarkersLayer?.clearLayers();
+        this.marker = L.marker([e.latlng.lat, e.latlng.lng], {icon});
+        this.sMarkersLayer?.addLayer(this.marker);
+        this.newCenter.emit({lat: e.latlng.lat, lng: e.latlng.lng, acc: 0});
+      });
+    }, 200);
   }
 
-  ngOnChanges(changes: { [property: string]: SimpleChange }) {
-    // Extract changes to the input property by its name
-    let change: SimpleChange = changes['center'];
-    this.map.center = change.currentValue;
-    //this.map.refresh;
-    this.marker.center =change.currentValue;
-    //this.marker.refresh;
-    console.log("changed center=", this.map.center);
+  createStations() {
+    this.sMarkersLayer = new L.LayerGroup();
 
-    // Whenever the data in the parent changes, this method gets triggered
-    // You can act on the changes here. You will have both the previous
-    // value and the  current value here.
+    let icon = new L.DivIcon({
+      html: `<img src='${this.iconUrl}'/> <span>${''}</span>`
+    });
+    this.marker = L.marker([this.center.lat, this.center.lng], {icon});
+
+
+    this.sMarkersLayer.addLayer(this.marker);
+    // @ts-ignore
+    this.sMarkersLayer?.addLayer(L.circle([this.center.lat, this.center.lng], {radius: this.center.acc /2 }).addTo(this.map));
+
+    this.markersLayer.addLayer(this.sMarkersLayer);
   }
 
-  // map: google.maps.Map = {
-  //   setCenter(this.center, );
-  // }
-  //
-  //   setCenter(latlng: google.maps.LatLng | google.maps.LatLngLiteral) {
-  // };
 
-  // options: google.maps.MapOptions = {
-  //   mapTypeId: 'hybrid',
-  //   zoomControl: true,
-  //   scrollwheel: true,
-  //   disableDoubleClickZoom: true,
-  //   maxZoom: 20,
-  //   minZoom: 8,
-  //   heading: 180,
-  //
-  // };
-
+  ngOnInit() {
+    // Karte neu zuentrieren
+    this.map?.setView(this.center, this.zoomLevel);
+    this.options = {
+      zoom: this.zoomLevel,
+      center: L.latLng(this.center.lat, this.center.lng),
+      layers: [
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        })
+      ]
+    };
+  }
 }
+

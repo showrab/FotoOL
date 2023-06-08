@@ -1,1 +1,17 @@
+/* map height */
+div {
+  height: 500px;
+}
 
+::ng-deep .leaflet-marker-icon img {
+  width: 40px !important;
+}
+
+::ng-deep .leaflet-div-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
+::ng-deep .leaflet-marker-icon span {
+  font-weight: bold;
+}

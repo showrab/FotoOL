@@ -48,7 +48,10 @@
 <!-- ToDo: @Martin OSM einblenden um die Position zu kontrollieren -->
 <div *ngIf="showMap">
   <button (click)="nextPhoto()" class="button">Ja diese Position ist OK</button>
-  <app-map [center]="center"></app-map>
+  <app-map
+    [center]="center"
+    (newCenter)="setNewCenter($event)"
+  ></app-map>
 </div>
 
 <!-- High Score anzeigen -->

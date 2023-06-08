@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { Photo } from "../../model/photo";
 import { NgxSpinnerService } from 'ngx-spinner';
+import {Center} from "../../model/center";
+import {FotoOlService} from "../../foto-ol.service";
 
 @Component({
   selector: 'app-photo-edit',
@@ -15,14 +17,19 @@ export class PhotoEditComponent implements OnInit{
   @Output() delete  = new EventEmitter;
   realUrl: boolean = true;
   photoUrl: string = '';
+  center: Center = { lat: 0, lng: 0, acc: 0};
 
   constructor(
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private fotoOlService: FotoOlService,
   ) {}
 
   ngOnInit(): void {
     if (this.photo.photoUrl.startsWith('data:image')) this.realUrl = false;
+    this.center.lat = this.photo.lat;
+    this.center.lng = this.photo.lng;
   }
+
   doSavePhoto() {
     console.log("photo {id: %d, tour: %s, hidden: %s, sortOrder: %d, lat: %f, lng: %f, hint: %s}",this.photo?.id, this.photo?.tourName, this.photo?.hidden, this.photo?.sortOrder, this.photo?.lat, this.photo?.lng, this.photo?.hint)
     this.savePhoto.emit(this.photo);
@@ -61,5 +68,12 @@ export class PhotoEditComponent implements OnInit{
     this.realUrl = true;
     this.photo.photoUrl=value;
     this.spinner.hide();
+  }
+
+  setNewCenter(center: Center) {
+    console.log("setNewCenter: ",center);
+    this.center = center;
+    this.photo.lat = center.lat;
+    this.photo.lng = center.lng;
   }
 }
