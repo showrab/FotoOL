@@ -19,6 +19,7 @@ export enum AdminState {
 })
 export class AdminComponent implements OnInit {
   @Output() start = new EventEmitter;
+  logged: boolean = false;
 
   // Ablaufsteuerung
   AdminState = AdminState;
@@ -30,6 +31,7 @@ export class AdminComponent implements OnInit {
   tourList: Tour[] | undefined;
   // Foto mit Metadaten zum editieren
   photo: Photo = new Photo();
+  private logCount: number = 0;
 
 
   constructor(
@@ -175,5 +177,22 @@ export class AdminComponent implements OnInit {
       return 'w3-bar-item w3-button w3-red';
     }
     return 'w3-bar-item w3-button';
+  }
+
+  login(password: string) {
+     this.fotoOlService.login(password).subscribe( (result) => {
+       if (result) {
+         this.logged = result;
+         this.logCount = 0;
+       } else {
+         this.logCount++;
+         if (this.logCount > 3) {
+           this.doStartFotoOl();
+         }
+       }
+    },error => {
+       this.logCount = 0;
+       this.doStartFotoOl();
+     });
   }
 }

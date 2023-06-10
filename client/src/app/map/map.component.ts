@@ -16,7 +16,7 @@ export class MapComponent implements OnInit, OnChanges {
   markersLayer = new L.LayerGroup();
   sMarkersLayer: LayerGroup | undefined;
   zoomLevel = 19;
-  iconUrl = "../assets/images/icons8-mouse-pointer-80_.png";
+  iconUrl = "../assets/images/marker2.png";
   marker: Marker | undefined;
 
   options: L.MapOptions = {

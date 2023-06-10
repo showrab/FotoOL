@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { Center } from "../model/center";
 import { Photo } from "../model/photo";
 import { FotoOlService } from "../foto-ol.service";
@@ -48,6 +48,9 @@ export class FotoOlComponent implements OnInit{
 
   tourList: Tour[] | undefined;
   myTourScoreList: HighScore[] | undefined;
+
+  protected readonly Math = Math;
+  title: string = 'Foto-OL';
 
   constructor(
     private fotoOlService: FotoOlService,
@@ -354,8 +357,6 @@ export class FotoOlComponent implements OnInit{
     if (grad > 337.5 - pm && grad <= 337.5 + pm) return "Nordnordwest";
     return grad + '°';
   }
-
-  protected readonly Math = Math;
 
   setNewCenter(center: Center) {
     this.center = center;

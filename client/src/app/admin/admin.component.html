@@ -1,37 +1,42 @@
-<div class="w3-bar w3-black">
-  <button class="w3-bar-item w3-button" (click)="doStartFotoOl()">Start</button>
-  <button class="w3-bar-item w3-button" [className]="getClass('camera')" (click)="doShowCamera()">Kamera</button>
-  <button class="w3-bar-item w3-button" [className]="getClass('photoList')" (click)="doShowPhotoList()">Fotos</button>
-  <button class="w3-bar-item w3-button" [className]="getClass('tourList')" (click)="doShowTourList()">Tour</button>
-  <button class="w3-bar-item w3-button" [className]="getClass('highScore')" (click)="doShowHighScore()">HigScore</button>
+<div *ngIf="!logged">
+  <input type="password" #password><button class="button" (click)="login(password.value)">login</button>
 </div>
+<div *ngIf="logged">
+  <div class="w3-bar w3-black">
+    <button class="w3-bar-item w3-button" (click)="doStartFotoOl()">Start</button>
+    <button class="w3-bar-item w3-button" [className]="getClass('camera')" (click)="doShowCamera()">Kamera</button>
+    <button class="w3-bar-item w3-button" [className]="getClass('photoList')" (click)="doShowPhotoList()">Fotos</button>
+    <button class="w3-bar-item w3-button" [className]="getClass('tourList')" (click)="doShowTourList()">Tour</button>
+    <button class="w3-bar-item w3-button" [className]="getClass('highScore')" (click)="doShowHighScore()">HigScore</button>
+  </div>
 
-<div *ngIf="show(AdminState.camera)">
-  <app-camera (photo)="setCapturedPhoto($event)"></app-camera>
-</div>
+  <div *ngIf="show(AdminState.camera)">
+    <app-camera (photo)="setCapturedPhoto($event)"></app-camera>
+  </div>
 
-<div *ngIf="show(AdminState.photoList)">
-  <app-photos-list
-    [photos]="photoList"
-    (updatePhoto)="editPhoto($event)"
-    (deletePhoto)="deletePhoto($event)">
-  </app-photos-list>
-</div>
+  <div *ngIf="show(AdminState.photoList)">
+    <app-photos-list
+      [photos]="photoList"
+      (updatePhoto)="editPhoto($event)"
+      (deletePhoto)="deletePhoto($event)">
+    </app-photos-list>
+  </div>
 
-<div class="col-12" *ngIf="show(AdminState.capturedPhoto)">
-  <app-photo-edit
-    [photo]="photo"
-    (savePhoto)="savePhoto($event)"
-    (cancel)="doCancelPhotoEdit()"
-    (delete)="deletePhoto($event)"
-  ></app-photo-edit>
-</div>
+  <div class="col-12" *ngIf="show(AdminState.capturedPhoto)">
+    <app-photo-edit
+      [photo]="photo"
+      (savePhoto)="savePhoto($event)"
+      (cancel)="doCancelPhotoEdit()"
+      (delete)="deletePhoto($event)"
+    ></app-photo-edit>
+  </div>
 
-<app-tour *ngIf="show(AdminState.tourList)"></app-tour>
+  <app-tour *ngIf="show(AdminState.tourList)"></app-tour>
 
-<div *ngIf="show(AdminState.highScore)">
-  <app-all-high-score
-    [tourList]="tourList"
-    [isAdmin]="true"
-  ></app-all-high-score>
+  <div *ngIf="show(AdminState.highScore)">
+    <app-all-high-score
+      [tourList]="tourList"
+      [isAdmin]="true"
+    ></app-all-high-score>
+  </div>
 </div>

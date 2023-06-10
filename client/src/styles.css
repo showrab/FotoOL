@@ -87,4 +87,6 @@ p {
   width: 100%;
 }
 
-
+input {
+  font-size: 20px;
+}

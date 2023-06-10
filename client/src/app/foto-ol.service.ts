@@ -65,4 +65,8 @@ export class FotoOlService {
   getBaseUrl() {
     return this.photoServiceUrl;
   }
+
+  login(password: string) {
+    return this.http.post<boolean>(this.photoServiceUrl + 'admin/login', password);
+  }
 }

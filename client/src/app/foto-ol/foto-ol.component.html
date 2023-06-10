@@ -1,3 +1,14 @@
+<div
+  style="
+  background-image: url('../assets/images/foto-ol_blured.png');
+  background-repeat: no-repeat;
+  background-size: 130px;
+  "
+  *ngIf="!show(FotoOlState.showFotos)"
+>
+  <h1>{{title}}</h1>
+</div>
+
 <!-- Spielregeln anzeigen -->
 <div *ngIf="show(FotoOlState.showHelp)">
   <app-help (teamNameEmitter)="setTeamName($event)"
@@ -39,15 +50,14 @@
     Strafpunkte {{score.score}}m,
     Distanz zu letzem Foto {{lastDistance}}m
   </p>
-
   <button *ngIf="!showHint" (click)="getHint()"class="button">Keine Ahnung wo das Foto aufgenommen wurde. Hilf mir auf die Sprünge</button>
   <br><br>
   <button (click)="setCurrentCoordinates(false)" class="button">Ich bin da ...</button>
+  <button *ngIf="showMap" (click)="nextPhoto()" class="button">Position OK</button>
 </div>
 
-<!-- ToDo: @Martin OSM einblenden um die Position zu kontrollieren -->
-<div *ngIf="showMap">
-  <button (click)="nextPhoto()" class="button">Ja diese Position ist OK</button>
+<!-- OSM einblenden um die Position zu kontrollieren -->
+<div *ngIf="showMap" #scrollMe [scrollTop]="scrollMe.scrollHeight">
   <app-map
     [center]="center"
     (newCenter)="setNewCenter($event)"
